@@ -6,7 +6,7 @@ import Scene_Lobby
 import Object_Player
 import Object_Button
 
-gName = "Scene_NormalStage"
+gName = "Scene_BossStage"
 gSceneImage = None
 gCoverImage = None
 gEvents = None

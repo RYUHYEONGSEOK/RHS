@@ -6,12 +6,12 @@ import Scene_Lobby
 gRunning = None
 gStack = None
 
-def change_scene(_scene):
+def change_scene(_scene, _ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gStack
     #바꾸는 경우에는 기존에 있는것 없애고 새로운 씬은 집어놓고 초기화
     pop_scene()
     gStack.append(_scene)
-    _scene.enter()
+    _scene.enter(_ambul, _dart, _pin, _banana)
 
 def push_scene(_scene):
     global gStack
