@@ -6,14 +6,14 @@ import Scene_Lobby
 gRunning = None
 gStack = None
 
-def change_state(_scene):
+def change_scene(_scene):
     global gStack
     #바꾸는 경우에는 기존에 있는것 없애고 새로운 씬은 집어놓고 초기화
-    pop_state()
+    pop_scene()
     gStack.append(_scene)
     _scene.enter()
 
-def push_state(_scene):
+def push_scene(_scene):
     global gStack
     #존재하는 경우 멈추는 것
     if (len(gStack) > 0):
@@ -22,7 +22,7 @@ def push_state(_scene):
     gStack.append(_scene)
     _scene.enter()
 
-def pop_state():
+def pop_scene():
     global gStack
     #기존에 존재하는 씬 나가는 함수 + 제거
     if (len(gStack) > 0):

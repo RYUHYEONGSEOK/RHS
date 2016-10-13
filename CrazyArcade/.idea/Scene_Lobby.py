@@ -1,49 +1,93 @@
 from pico2d import *
 
 import Framework
-#import Scene_Stage
-#import Scene_Stage
+import Scene_NormalStage
+#import Scene_BossStage
 
-import Object_Player
-
+import Object_Button
 
 gName = "Scene_Lobby"
 gSceneImage = None
+gCoverImage = None
+gMapNormalImage = None
+gMapBossImage = None
 gEvents = None
-gPlayer = None
+gStageNumber = 1
+#버튼
+gStartButton = None
+gMapNormalButton = None
+gMapBossButton = None
 
 def enter():
-    global gSceneImage
+    global gSceneImage, gCoverImage, gMapNormalImage, gMapBossImage
     gSceneImage = load_image('..\\Sprite\\02.Lobby\\Lobby_Bg.bmp')
+    gCoverImage = load_image('..\\Sprite\\02.Lobby\\Lobby_Image_Empty.bmp')
+    gMapNormalImage = load_image('..\\Sprite\\02.Lobby\\Lobby_Image_Map_0.bmp')
+    gMapBossImage = load_image('..\\Sprite\\02.Lobby\\Lobby_Image_Map_1.bmp')
 
-    #플레이어 객체 추가
-    global gPlayer
-    gPlayer = Object_Player.Player(40, 60)
-    gPlayer.enter()
+    #버튼 객체 추가
+    global gStartButton, gMapNormalButton, gMapBossButton
+    gStartButton = Object_Button.Button(598, (600 - 515), 1)
+    gStartButton.enter()
+    gMapNormalButton = Object_Button.Button(698, (600 - 349), 2)
+    gMapNormalButton.enter()
+    gMapBossButton = Object_Button.Button(698, (600 - 368), 3)
+    gMapBossButton.enter()
+
+    # 기본스테이지 1로 맞춰놓기
+    global gStageNumber
+    gStageNumber = 1
 
 def exit():
-    global gSceneImage
+    global gSceneImage, gCoverImage, gMapNormalImage, gMapBossImage
     del (gSceneImage)
+    del (gCoverImage)
+    del (gMapNormalImage)
+    del (gMapBossImage)
 
-    #플레이어 삭제
-    global gPlayer
-    del(gPlayer)
+    #버튼 삭제
+    global gStartButton, gMapNormalButton, gMapBossButton
+    del(gStartButton)
+    del(gMapNormalButton)
+    del(gMapBossButton)
 
 def update():
-    # 나중에 제거하지만 이벤트값은 버튼들로 뿌려줘야 한다!
-    global gPlayer
-    global gEvents
-    gPlayer.update(gEvents)
+    #이벤트값은 버튼들로 뿌려줘야 한다!
+    global gEvents, gStageNumber
 
-    #pass
+    #버튼
+    global gStartButton, gMapNormalButton, gMapBossButton
+    if (gStartButton.update(gEvents)) == 1:
+        if gStageNumber == 1:
+            Framework.change_scene(Scene_NormalStage)
+            return
+        elif gStageNumber == 2:
+            pass
+
+    if (gMapNormalButton.update(gEvents)) == 2:
+        gStageNumber = 1
+    if (gMapBossButton.update(gEvents)) == 3:
+        gStageNumber = 2
 
 def draw():
-    global gSceneImage
+    global gSceneImage, gCoverImage
     clear_canvas()
+    #배경
     gSceneImage.draw(400, 300)
-    #나중에 제거
-    global gPlayer
-    gPlayer.draw()
+    #가림막
+    for i in range(0, 3):
+        gCoverImage.draw(306 + (i * 189), (600 - 210))
+    #맵선택 화면
+    if gStageNumber == 1:
+        gMapNormalImage.draw(551, (600 - 406))
+    elif gStageNumber == 2:
+        gMapBossImage.draw(551, (600 - 406))
+
+    #시작버튼
+    global gStartButton, gMapNormalButton, gMapBossButton
+    gStartButton.draw()
+    gMapNormalButton.draw()
+    gMapBossButton.draw()
 
     update_canvas()
 

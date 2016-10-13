@@ -5,7 +5,7 @@ import Scene_Lobby
 
 gName = "Scene_Logo"
 gSceneImage = None
-logo_time = 0.0
+gLogo_time = 0.0
 
 def enter():
     global gSceneImage
@@ -16,15 +16,15 @@ def exit():
     del(gSceneImage)
 
 def update():
-    global logo_time
-    #if logo_time > 1.0:
-    if logo_time > 0.1:
-        logo_time = 0
-        Framework.change_state(Scene_Lobby)
+    global gLogo_time
+    #if gLogo_time > 1.0:
+    if gLogo_time > 0.1:
+        gLogo_time = 0
+        Framework.change_scene(Scene_Lobby)
         return
 
     delay(0.01)
-    logo_time += 0.01
+    gLogo_time += 0.01
 
 def draw():
     global gSceneImage
