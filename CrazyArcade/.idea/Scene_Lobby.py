@@ -6,7 +6,6 @@ import Scene_BossStage
 
 import Object_Button
 
-gName = "Scene_Lobby"
 gEvents = None
 gStageNumber = 1
 #이미지
@@ -139,6 +138,7 @@ def draw():
 
 def handle_events():
     global gEvents
+    gEvents = None
     gEvents = get_events()
     for event in gEvents:
         if event.type == SDL_QUIT:

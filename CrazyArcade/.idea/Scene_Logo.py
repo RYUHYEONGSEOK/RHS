@@ -3,7 +3,6 @@ from pico2d import *
 import Framework
 import Scene_Lobby
 
-gName = "Scene_Logo"
 gSceneImage = None
 gLogo_time = 0.0
 

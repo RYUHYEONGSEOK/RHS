@@ -6,15 +6,17 @@ import Scene_Lobby
 import Object_Player
 import Object_Button
 
-gName = "Scene_NormalStage"
 gSceneImage = None
 gCoverImage = None
 gEvents = None
 
-#플레이어
-gPlayer = None
 #버튼
 gExitButton = None
+#플레이어
+gPlayer = None
+#오브젝트관리 리스트
+gObjList = None
+PLAYER, MONSTER, BOSS_MONSTER, TILE, ITEM, BUBBLE, BUBBLE_EFFECT = 0, 1, 2, 3, 4, 5, 6
 
 def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gSceneImage, gCoverImage
@@ -26,6 +28,10 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gPlayer = Object_Player.Player(40, 60, _ambul, _dart, _pin, _banana)
     gPlayer.enter()
 
+    # 오브젝트관리 리스트
+    global gObjList
+    gObjList = {PLAYER: [gPlayer], MONSTER: [], BOSS_MONSTER: [], TILE: [], ITEM: [], BUBBLE: [], BUBBLE_EFFECT: []}
+
     # 버튼 객체 추가
     global gExitButton
     gExitButton = Object_Button.Button(717, (600 -577), 4)
@@ -36,9 +42,15 @@ def exit():
     del(gSceneImage)
     del(gCoverImage)
 
+    # 오브젝트관리 리스트 삭제
+    global gObjList
+    for i in gObjList:
+        for j in gObjList[i]:
+            del j
+
     # 플레이어 삭제
     global gPlayer
-    del (gPlayer)
+    gPlayer = None
 
     #버튼 삭제
     global gExitButton
@@ -47,9 +59,11 @@ def exit():
 def update():
     global gEvents
 
-    # 객체들의 update
-    global gPlayer
-    gPlayer.update(gEvents)
+    # 오브젝트관리 리스트 update
+    global gObjList
+    for i in gObjList:
+        for j in gObjList[i]:
+            j.update(gEvents)
 
     #나가기 버튼 로비로 이동
     global gExitButton
@@ -65,17 +79,21 @@ def draw():
     for i in range(0, 3):
         gCoverImage.draw(717, (600 - 161.5) - (43 * i))
 
-    # 객체들의 draw
+    # 버튼의 draw
     global gExitButton
     gExitButton.draw()
 
-    global gPlayer
-    gPlayer.draw()
+    # 오브젝트관리 리스트 draw
+    global gObjList
+    for i in gObjList:
+        for j in gObjList[i]:
+            j.draw()
 
     update_canvas()
 
 def handle_events():
     global gEvents
+    gEvents = None
     gEvents = get_events()
     for event in gEvents:
         if event.type == SDL_QUIT:
