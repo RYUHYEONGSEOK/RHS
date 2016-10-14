@@ -1,10 +1,12 @@
 from pico2d import *
+import time
 
 import Scene_Logo
 import Scene_Lobby
 
 gRunning = None
 gStack = None
+gFrameTime = time.time()
 
 def change_scene(_scene, _ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gStack
@@ -46,11 +48,16 @@ def run(_scene):
 
     #게임의 구동부분
     while (gRunning):
-        gStack[-1].handle_events()
-        gStack[-1].update()
-        gStack[-1].draw()
+        #frame 40으로 한정
+        global gFrameTime
+        if gFrameTime + 0.025 < time.time() :
+            gFrameTime = time.time()
+            #키입력 + update + draw
+            gStack[-1].handle_events()
+            gStack[-1].update()
+            gStack[-1].draw()
 
-    #게임이 끝나게 되면 모든 데이터 삭제
+    #게임이 끝나게 되면 모든 씬 삭제
     while (len(gStack) > 0):
         gStack[-1].exit()
         gStack.pop()
