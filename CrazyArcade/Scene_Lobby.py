@@ -34,7 +34,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gCoverImage = load_image('Sprite\\02.Lobby\\Lobby_Image_Empty.bmp')
     gMapNormalImage = load_image('Sprite\\02.Lobby\\Lobby_Image_Map_0.bmp')
     gMapBossImage = load_image('Sprite\\02.Lobby\\Lobby_Image_Map_1.bmp')
-    gNumberImage = load_image('Sprite\\03.InGame\\InGame_Image_Num.bmp')
+    gNumberImage = load_image('Sprite\\03.InGame\\InGame_Image_Num.png')
 
     #버튼 객체 추가
     global gStartButton, gMapNormalButton, gMapBossButton, gQButton, gWButton, gEButton, gRButton
@@ -54,6 +54,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gRButton.enter()
 
     # 아이템수 동기화
+    global gAmbulNum, gDartNum, gPinNum, gBananaNum
     gAmbulNum, gDartNum, gPinNum, gBananaNum = _ambul, _dart, _pin, _banana
 
 def exit():
@@ -81,12 +82,13 @@ def update():
 
     #버튼
     global gStartButton, gMapNormalButton, gMapBossButton, gQButton, gWButton, gEButton, gRButton
+    global gAmbulNum, gDartNum, gPinNum, gBananaNum
     if (gStartButton.update(gEvents)) == 1:
         if gStageNumber == 1:
-            Framework.change_scene(Scene_NormalStage)
+            Framework.change_scene(Scene_NormalStage, gAmbulNum, gDartNum, gPinNum, gBananaNum)
             return
         elif gStageNumber == 2:
-            Framework.change_scene(Scene_BossStage)
+            Framework.change_scene(Scene_BossStage, gAmbulNum, gDartNum, gPinNum, gBananaNum)
             return
 
     if (gMapNormalButton.update(gEvents)) == 2:
@@ -94,7 +96,6 @@ def update():
     if (gMapBossButton.update(gEvents)) == 3:
         gStageNumber = 2
 
-    global gAmbulNum, gDartNum, gPinNum, gBananaNum
     if (gQButton.update(gEvents)) == 5:
         gAmbulNum += 1
     if (gWButton.update(gEvents)) == 6:
