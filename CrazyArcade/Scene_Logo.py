@@ -8,7 +8,7 @@ gLogo_time = 0.0
 
 def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gSceneImage
-    gSceneImage = load_image('..\\Sprite\\01.Logo\\kpu_credit.png')
+    gSceneImage = load_image('Sprite\\01.Logo\\kpu_credit.png')
 
     #시간 초기화
     global gLogo_time

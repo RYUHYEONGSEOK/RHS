@@ -30,11 +30,11 @@ gBananaNum = 0
 
 def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gSceneImage, gCoverImage, gMapNormalImage, gMapBossImage, gNumberImage
-    gSceneImage = load_image('..\\Sprite\\02.Lobby\\Lobby_Bg.bmp')
-    gCoverImage = load_image('..\\Sprite\\02.Lobby\\Lobby_Image_Empty.bmp')
-    gMapNormalImage = load_image('..\\Sprite\\02.Lobby\\Lobby_Image_Map_0.bmp')
-    gMapBossImage = load_image('..\\Sprite\\02.Lobby\\Lobby_Image_Map_1.bmp')
-    gNumberImage = load_image('..\\Sprite\\03.InGame\\InGame_Image_Num.bmp')
+    gSceneImage = load_image('Sprite\\02.Lobby\\Lobby_Bg.bmp')
+    gCoverImage = load_image('Sprite\\02.Lobby\\Lobby_Image_Empty.bmp')
+    gMapNormalImage = load_image('Sprite\\02.Lobby\\Lobby_Image_Map_0.bmp')
+    gMapBossImage = load_image('Sprite\\02.Lobby\\Lobby_Image_Map_1.bmp')
+    gNumberImage = load_image('Sprite\\03.InGame\\InGame_Image_Num.bmp')
 
     #버튼 객체 추가
     global gStartButton, gMapNormalButton, gMapBossButton, gQButton, gWButton, gEButton, gRButton
@@ -153,11 +153,11 @@ def resume(): pass
 def setItemCount():
     global gAmbulNum, gDartNum, gPinNum, gBananaNum
 
-    if gAmbulNum > 10:
+    if gAmbulNum > 9:
         gAmbulNum = 0
-    if gDartNum > 10:
+    if gDartNum > 9:
         gDartNum = 0
-    if gPinNum > 10:
+    if gPinNum > 9:
         gPinNum = 0
-    if gBananaNum > 10:
+    if gBananaNum > 9:
         gBananaNum = 0
