@@ -20,7 +20,6 @@ class Player(Object.GameObject):
         self.speed = 3
         self.power = 2
         self.bubbleCount = 2
-        self.isKickable = False
         self.isBushCheck = False
         self.isSlidingPlayer = False
         #이미지(BIRTH STAND WALK BUBBLE BUBBLE_WALK DEAD)
@@ -166,9 +165,8 @@ class Player(Object.GameObject):
                 #치트키(모든 아이템 최대 + 속성 최대)
                 if event.key == SDLK_RETURN:
                     if self.birth == 0:
-                        self.speed, self.bubbleCount, self.power = 6, 10, 10
+                        self.speed, self.bubbleCount, self.power = 5, 5, 5
                         self.bananaCount, self.ambulanceCount, self.pinCount, self.dartCount = 9, 9, 9, 9
-                        self.isKickable = True
                         self.birth = 1
                         self.frame = 0
                         self.player_state = 'STATE_BUBBLE'
@@ -284,11 +282,11 @@ class Player(Object.GameObject):
     def itemMaxCheck(self):
         #속성
         if self.speed > 6:
-            self.speed = 6
-        if self.bubbleCount > 10:
-            self.bubbleCount = 10
-        if self.power > 10:
-            self.power = 10
+            self.speed = 5
+        if self.bubbleCount > 5:
+            self.bubbleCount = 5
+        if self.power > 5:
+            self.power = 5
 
     def collisionWall(self):
         if self.X < 40:
@@ -316,11 +314,14 @@ class Player(Object.GameObject):
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(self, i)
                 if (isCollision == True) and (i.breakingOption != 2):
                     Manager_Collision.collisionAABB(self, i, left, top, right, bottom)
+                    break
                 elif (isCollision == True) and (i.breakingOption == 2):
                     self.isBushCheck = True
                     i.isPlayerCollision = True
+                    break
         elif self.type == 1:
             for i in Scene_BossStage.gObjList[3]:
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(self, i)
                 if (isCollision == True) and (i.breakingOption != 2):
                     Manager_Collision.collisionAABB(self, i, left, top, right, bottom)
+                    break
