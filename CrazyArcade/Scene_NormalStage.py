@@ -4,9 +4,12 @@ import time
 import Framework
 import Scene_Lobby
 
+import Manager_Draw
+
 import Object_Player
 import Object_Button
 import Object_Tile
+import Object_Special_Tile
 
 NORMAL_STAGE = 0
 gSceneImage = None
@@ -17,13 +20,14 @@ gEvents = None
 gTimeImage = None
 gGameTime = None
 gCheckTime = None
+gIsHurryUp, gIsStart, gIsEnd = None, None, None#enter에서 초기화까지만 함
 #버튼
 gExitButton = None
 #플레이어
 gPlayer = None
 #오브젝트관리 리스트
 gObjList = None
-PLAYER, MONSTER, BOSS_MONSTER, TILE, ITEM, BUBBLE, BUBBLE_EFFECT = 0, 1, 2, 3, 4, 5, 6
+PLAYER, MONSTER, BOSS_MONSTER, SPECIAL_TILE, ITEM, BUBBLE, BUBBLE_EFFECT = 0, 1, 2, 3, 4, 5, 6
 #타일 관리 리스트(15x13)
 gTileList = None
 
@@ -38,6 +42,10 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gGameTime = 180
     gCheckTime = time.time()
 
+    #게임의 시간에 대한 논리연산
+    global gIsHurryUp, gIsStart, gIsEnd
+    gIsHurryUp, gIsStart, gIsEnd = False, False, False
+
     # 플레이어 객체 추가
     global gPlayer
     gPlayer = Object_Player.Player(40, (600 - 60), NORMAL_STAGE, _ambul, _dart, _pin, _banana)
@@ -45,7 +53,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
 
     # 오브젝트관리 리스트
     global gObjList
-    gObjList = {PLAYER: [gPlayer], MONSTER: [], BOSS_MONSTER: [], TILE: [], ITEM: [], BUBBLE: [], BUBBLE_EFFECT: []}
+    gObjList = {PLAYER: [gPlayer], MONSTER: [], BOSS_MONSTER: [], SPECIAL_TILE: [], ITEM: [], BUBBLE: [], BUBBLE_EFFECT: []}
 
     # 타일관리 리스트 => 나중에 파일입출력으로 불러오기
     global gTileList
@@ -55,6 +63,18 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
             tempTile = Object_Tile.Tile(40 + (j * 40), (600 - 60) - (40 * i), NORMAL_STAGE, 1, 0)
             tempTile.enter()
             gTileList[i].append(tempTile)
+
+    #스페셜 타일 생성 => 나중에 파일입출력으로 불러오기
+    #indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
+    tempSpecialTile = Object_Special_Tile.SpecialTile(400, 300, NORMAL_STAGE, 0, 0)
+    tempSpecialTile.enter()
+    gObjList[SPECIAL_TILE].append(tempSpecialTile)
+    tempSpecialTile = Object_Special_Tile.SpecialTile(440, 300, NORMAL_STAGE, 0, 1)
+    tempSpecialTile.enter()
+    gObjList[SPECIAL_TILE].append(tempSpecialTile)
+    tempSpecialTile = Object_Special_Tile.SpecialTile(480, 300, NORMAL_STAGE, 0, 2)
+    tempSpecialTile.enter()
+    gObjList[SPECIAL_TILE].append(tempSpecialTile)
 
     # 버튼 객체 추가
     global gExitButton
@@ -74,13 +94,17 @@ def exit():
     global gObjList
     for i in gObjList:
         for j in gObjList[i]:
-            del j
+            gObjList[i].remove(j)
+    # 오브젝트관리 리스트 2번째 삭제
+    for i in gObjList:
+        for j in gObjList[i]:
+            gObjList[i].remove(j)
 
     # 타일관리 리스트
     global gTileList
     for i in gTileList:
         for j in gTileList[i]:
-            del j
+            gTileList[i].remove(j)
 
     # 플레이어 삭제
     global gPlayer
@@ -93,26 +117,29 @@ def exit():
 def update():
     #게임의 시간 및 키보드이벤트
     global gEvents, gGameTime, gCheckTime
+    global gObjList
 
     # 시간 1초씩 줄이기
-    if gCheckTime + 1 < time.time():
-        gCheckTime = time.time()
-        gGameTime -= 1
-        # 시간이 초과되면 0으로 초기화 하고 종료
-        if gGameTime < 0:
-            gGameTime = 0
-            # 종료되는 과정 추가(지금은 임시방편)
-            Framework.change_scene(Scene_Lobby)
-            return
+    if (len(gObjList[PLAYER]) > 0):
+        if gCheckTime + 1 < time.time():
+            gCheckTime = time.time()
+            gGameTime -= 1
+            # 시간이 초과되면 0으로 초기화 하고 종료
+            if gGameTime < 0:
+                gGameTime = 0
+                # 종료되는 과정 추가(지금은 임시방편)
+                Framework.change_scene(Scene_Lobby)
+                return
+    else: pass#배너추가
 
     # 오브젝트관리 리스트 update
-    global gObjList
+    # Manager_Draw.reset()
     for i in gObjList:
         for j in gObjList[i]:
             if (j.update(gEvents) == False):
                 gObjList[i].remove(j)
-            else:
-                pass
+            else:pass
+                #Manager_Draw.addObject(j)
 
     #나가기 버튼 로비로 이동
     global gExitButton
@@ -156,6 +183,8 @@ def draw():
     for i in gObjList:
         for j in gObjList[i]:
             j.draw()
+    # 드로우 매니저 draw
+    # Manager_Draw.draw()
 
     update_canvas()
 
