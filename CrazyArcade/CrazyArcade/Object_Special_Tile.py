@@ -1,5 +1,6 @@
 # coding: cp949
 from pico2d import *
+import random
 import time
 
 import Scene_NormalStage
@@ -7,8 +8,8 @@ import Scene_BossStage
 
 import Manager_Collision
 
-#아이템 추가
 import Object_Tile
+import Object_Item
 
 class SpecialTile(Object_Tile.Tile):
     def __init__(self, _x, _y, _type, _imagevalue = 0, _breakingOption = 0):
@@ -23,6 +24,7 @@ class SpecialTile(Object_Tile.Tile):
         self.events = None
         self.isDeath = False #프레임이 모두 지나가면 True로 변경
         self.isCollision = False #충돌하면 True로 변경
+        self.dropItem = random.randint(0, 100) #아이템을 드랍할 확률
         # 이미지 사용용도의 변수
         self.specialTile_image = None
         self.frame = 0
@@ -32,7 +34,7 @@ class SpecialTile(Object_Tile.Tile):
 
     def __del__(self):
         self.exit()
-        # 아이템 만들면 나오게 하는 부분
+
         if self.breakingOption == 0: pass
         #터지면 타일의 옵션변경(len(Scene_NormalStage.gTileList) > indexY) 이걸로하면 왜 중간의 indexX가 바뀌는건가
         indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
@@ -113,6 +115,18 @@ class SpecialTile(Object_Tile.Tile):
 
     def exit(self):
         del (self.specialTile_image)
+
+        #아이템의 드랍
+        if self.breakingOption == 0:
+            if self.dropItem < 50:
+                if self.type == 0:
+                    tempItem = Object_Item.Item(self.X, self.Y, self.type, 0)
+                    tempItem.enter()
+                    Scene_NormalStage.gObjList[4].append(tempItem)
+                elif self.type == 1:
+                    tempItem = Object_Item.Item(self.X, self.Y, self.type, 0)
+                    tempItem.enter()
+                    Scene_BossStage.gObjList[4].append(tempItem)
 
     def update(self, _events):
         if self.isDeath == True:

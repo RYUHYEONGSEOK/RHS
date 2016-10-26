@@ -41,6 +41,7 @@
     <Compile Include="Object_Button.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Object_Item.py" />
     <Compile Include="Object_Player.py">
       <SubType>Code</SubType>
     </Compile>
