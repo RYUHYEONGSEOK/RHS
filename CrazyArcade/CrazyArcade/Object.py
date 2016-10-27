@@ -3,7 +3,6 @@ class GameObject:
     def __init__(self, _x = 0, _y = 0):
         self.X, self.Y = _x, _y
         self.sizeX, self.sizeY
-        #self.isDelete = False
 
     def getCollisionBox(self):
         #왼쪽 아래좌표 + 오른쪽 위좌표

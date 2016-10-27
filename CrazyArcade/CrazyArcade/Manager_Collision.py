@@ -47,3 +47,14 @@ def collisionAABB(_mainObject, _subObject, _left, _top, _right, _bottom):
             _mainObject.X += (_right - _left)
         else:
             _mainObject.X -= (_right - _left)
+
+def collisionMiniIntersectRect(_object1, _object2):
+    object1_x1, object1_y1, object1_x2, object1_y2 = _object1.getCollisionBox()
+    object2_x1, object2_y1, object2_x2, object2_y2 = _object2.getCollisionBox()
+
+    if object1_x1 > object2_x2: return False
+    if object1_x2 < object2_x1: return False
+    if object1_y2 < object2_y1: return False
+    if object1_y1 > object2_y2: return False
+
+    return True

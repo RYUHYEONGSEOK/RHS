@@ -65,6 +65,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
 
     #스페셜 타일 생성 => 나중에 파일입출력으로 불러오기
     #indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
+    #gTileList[indexY][indexX].changeOption(0)
     tempSpecialTile = Object_Special_Tile.SpecialTile(400, 300, NORMAL_STAGE, 0, 0)
     tempSpecialTile.enter()
     gObjList[SPECIAL_TILE].append(tempSpecialTile)

@@ -41,11 +41,11 @@ class SpecialTile(Object_Tile.Tile):
         if self.type == 0:
             if len(Scene_NormalStage.gTileList[indexY]) > indexX:
                 Scene_NormalStage.gTileList[indexY][indexX].changeOption(0)
-            else: print('error')
+            #else: print('error')
         elif self.type == 1:
             if len(Scene_BossStage.gTileList[indexY]) > indexX:
                 Scene_BossStage.gTileList[indexY][indexX].changeOption(0)
-            else: print('error')
+            #else: print('error')
 
     def enter(self):
         # 이미지 사용용도의 변수
@@ -119,12 +119,13 @@ class SpecialTile(Object_Tile.Tile):
         #아이템의 드랍
         if self.breakingOption == 0:
             if self.dropItem < 50:
+                tempItemNum = (int)(self.dropItem / 10)
                 if self.type == 0:
-                    tempItem = Object_Item.Item(self.X, self.Y, self.type, 0)
+                    tempItem = Object_Item.Item(self.X, self.Y, self.type, tempItemNum)
                     tempItem.enter()
                     Scene_NormalStage.gObjList[4].append(tempItem)
                 elif self.type == 1:
-                    tempItem = Object_Item.Item(self.X, self.Y, self.type, 0)
+                    tempItem = Object_Item.Item(self.X, self.Y, self.type, tempItemNum)
                     tempItem.enter()
                     Scene_BossStage.gObjList[4].append(tempItem)
 
@@ -135,6 +136,7 @@ class SpecialTile(Object_Tile.Tile):
         #충돌체크
         self.collisionBubbleEffect()
         self.collisionBubble()
+        self.collisionItem()
 
         #충돌되면 프레임 무브하고 삭제하는것
         self.bush_frame_move()
@@ -207,3 +209,25 @@ class SpecialTile(Object_Tile.Tile):
                         i.isBushCheck = False
             else: pass
         elif self.type == 1: pass
+
+    def collisionItem(self):
+        if self.type == 0:
+            if self.breakingOption == 2:
+                #부쉬와의 충돌
+                for i in Scene_NormalStage.gObjList[4]:
+                    i.isBushCheck = False
+                    if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                        i.isBushCheck = True
+            else:
+                for i in Scene_NormalStage.gObjList[4]:
+                    #다트의 충돌
+                    if (i.itemNumber != 8):
+                        continue 
+                    if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                        i.isDelete = True
+        elif self.type == 1:
+            for i in Scene_BossStage.gObjList[4]:
+                if (i.itemNumber != 8):
+                    continue 
+                if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                    i.isDelete = True

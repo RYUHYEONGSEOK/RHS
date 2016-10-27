@@ -16,9 +16,9 @@ class Item(Object.GameObject):
         #아이템의 속성(노말은0, 보스면1)
         #아이템의 번호(0~8) : 물풍선,파워,신발,파워최대,속도최대,제외,제외,바나나,다트
         self.type, self.itemNumber = _type, _itemNum
-        #다트의 경우에는 방향
-        #상하우좌 0 1 2 3
+        #다트의 경우에는 방향(상하우좌 0 1 2 3)
         self.dir = _dir
+        self.isDelete = False
         # 이미지 사용용도의 변수
         self.item_image = None
         self.isBushCheck = False
@@ -38,24 +38,78 @@ class Item(Object.GameObject):
 
     def update(self, _events):
         #다트만 움직임을 가짐
-        #넘어가면 False 반환으로 삭제
         if self.itemNumber == 8:
             if self.dir == 0:
-                pass
+                self.Y += 5
             elif self.dir == 1:
-                pass
+                self.Y -= 5
             elif self.dir == 2:
-                pass
+                self.X += 5
             elif self.dir == 3:
-                pass
+                self.X -= 5
+            #벽 넘어가면 삭제
+            if self.X > 620 or self.X < 20:
+                self.isDelete = True
+            if self.Y > 60 or self.Y < 40:
+                self.isDelete = True
 
         #충돌
-        #타일(부쉬타일이랑) + 플레이어(다트빼고) + 물풍선(다트일때만) + 물풍선효과(다트빼고) 충돌
+        #타일(부쉬타일이랑) + 물풍선(다트일때만) + 물풍선효과(다트빼고)
+        if (self.itemNumber != 8):
+            self.collisionPlayer()
+        self.collisionBubble()
+        self.collisionBubbleEffect()
+
+        if self.isDelete == True:
+            return False
 
     def draw(self):
         # 프레임이 시작하는 그림에서의 X좌표, Y좌표(Y좌표는 아래서부터 1) => 왼쪽 아래부터 오른쪽 위까지 하나를 그림
         if self.isBushCheck: pass
         elif self.itemNumber == 8:
             self.item_image.clip_draw((self.dir * 40), 0, 40, 40, self.X, self.Y)
+            print("dart draw")
         else:
             self.item_image.clip_draw((self.itemNumber * 40), 0, 40, 40, self.X, self.Y)
+
+    def collisionPlayer(self):
+        if self.type == 0:
+            if (len(Scene_NormalStage.gObjList[0]) > 0):
+                if(Manager_Collision.collisionMiniIntersectRect(self, Scene_NormalStage.gObjList[0][0]) == True):
+                    self.isDelete = True
+                    if self.itemNumber == 0:
+                        Scene_NormalStage.gObjList[0][0].bubbleCount += 1
+                    elif self.itemNumber == 1:
+                        Scene_NormalStage.gObjList[0][0].power += 1
+                    elif self.itemNumber == 2:
+                        Scene_NormalStage.gObjList[0][0].speed += 1
+                    elif self.itemNumber == 3:
+                        Scene_NormalStage.gObjList[0][0].power = 5
+                    elif self.itemNumber == 4:
+                        Scene_NormalStage.gObjList[0][0].speed = 6
+                    #바나나 나중에 추가
+                    elif self.itemNumber == 7:
+                        pass
+        elif self.type == 1:
+            if (len(Scene_BossStage.gObjList[0]) > 0):
+                if(Manager_Collision.collisionMiniIntersectRect(self, Scene_BossStage.gObjList[0][0]) == True):
+                    self.isDelete = True
+                    if self.itemNumber == 0:
+                        Scene_BossStage.gObjList[0][0].bubbleCount += 1
+                    elif self.itemNumber == 1:
+                        Scene_BossStage.gObjList[0][0].power += 1
+                    elif self.itemNumber == 2:
+                        Scene_BossStage.gObjList[0][0].speed += 1
+                    elif self.itemNumber == 3:
+                        Scene_BossStage.gObjList[0][0].power = 5
+                    elif self.itemNumber == 4:
+                        Scene_BossStage.gObjList[0][0].speed = 6
+                    #바나나 나중에 추가
+                    elif self.itemNumber == 7:
+                        pass
+
+    def collisionBubble(self):
+        pass
+
+    def collisionBubbleEffect(self):
+        pass

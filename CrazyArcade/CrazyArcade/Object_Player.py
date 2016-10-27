@@ -9,6 +9,7 @@ import Manager_Collision
 
 import Object
 import Object_Bubble
+import Object_Item
 
 class Player(Object.GameObject):
     def __init__(self, _x, _y, _type, _ambul = 0, _dart = 0, _pin = 0, _banana = 0):
@@ -157,6 +158,16 @@ class Player(Object.GameObject):
                 if event.key == SDLK_w:
                     if (self.dartCount > 0) and (self.birth == 0):
                         self.dartCount -= 1
+                    else: return
+                    #促飘积己
+                    indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
+                    posX, posY = 40 + (indexX * 40), (600 - 60) - (40 * indexY)
+                    tempDart = Object_Item.Item(posX, posY, self.type, 8, self.dir)
+                    tempDart.enter()
+                    if self.type == 0:
+                        Scene_NormalStage.gObjList[4].append(tempDart)
+                    elif self.type == 1:
+                        Scene_BossStage.gObjList[4].append(tempDart)
                 if event.key == SDLK_e:
                     if (self.pinCount > 0) and (self.birth == 0):
                         self.pinCount -= 1
@@ -283,7 +294,7 @@ class Player(Object.GameObject):
     def itemMaxCheck(self):
         #加己
         if self.speed > 6:
-            self.speed = 5
+            self.speed = 6
         if self.bubbleCount > 5:
             self.bubbleCount = 5
         if self.power > 5:
