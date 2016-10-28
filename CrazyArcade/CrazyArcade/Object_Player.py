@@ -304,21 +304,23 @@ class Player(Object.GameObject):
         if self.X < 40:
             self.X = 40
             self.isSlidingPlayer = False
+            return
         elif self.X > 600:
             self.X = 600
             self.isSlidingPlayer = False
+            return
 
         if self.Y < 60:
             self.Y = 60
             self.isSlidingPlayer = False
+            return
         elif self.Y > 540:
             self.Y = 540
             self.isSlidingPlayer = False
+            return
 
     def collisionSpecialTile(self):
         self.isBushCheck = False
-
-        #부쉬는 보스맵에는 존재X
         if self.type == 0:
             for i in Scene_NormalStage.gObjList[3]:
                 if i.breakingOption == 2:

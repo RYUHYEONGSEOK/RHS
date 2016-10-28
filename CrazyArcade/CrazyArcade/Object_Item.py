@@ -40,26 +40,25 @@ class Item(Object.GameObject):
         #다트만 움직임을 가짐
         if self.itemNumber == 8:
             if self.dir == 0:
-                self.Y += 5
+                self.Y += 8
             elif self.dir == 1:
-                self.Y -= 5
+                self.Y -= 8
             elif self.dir == 2:
-                self.X += 5
+                self.X += 8
             elif self.dir == 3:
-                self.X -= 5
+                self.X -= 8
             #벽 넘어가면 삭제
             if self.X > 620 or self.X < 20:
                 self.isDelete = True
-            if self.Y > 60 or self.Y < 40:
+            if self.Y > 550 or self.Y < 40:
                 self.isDelete = True
-
         #충돌
-        #타일(부쉬타일이랑) + 물풍선(다트일때만) + 물풍선효과(다트빼고)
         if (self.itemNumber != 8):
             self.collisionPlayer()
-        self.collisionBubble()
-        self.collisionBubbleEffect()
-
+            self.collisionBubbleEffect()
+        else:
+            self.collisionBubble()
+        #삭제처리
         if self.isDelete == True:
             return False
 
@@ -68,7 +67,6 @@ class Item(Object.GameObject):
         if self.isBushCheck: pass
         elif self.itemNumber == 8:
             self.item_image.clip_draw((self.dir * 40), 0, 40, 40, self.X, self.Y)
-            print("dart draw")
         else:
             self.item_image.clip_draw((self.itemNumber * 40), 0, 40, 40, self.X, self.Y)
 
@@ -109,7 +107,27 @@ class Item(Object.GameObject):
                         pass
 
     def collisionBubble(self):
-        pass
+        if self.type == 0:
+            for i in Scene_NormalStage.gObjList[5]:
+                if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                    self.isDelete = True
+                    i.birth = 3
+                    break
+        elif self.type == 1:
+            for i in Scene_BossStage.gObjList[5]:
+                if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                    self.isDelete = True
+                    i.birth = 3
+                    break
 
     def collisionBubbleEffect(self):
-        pass
+        if self.type == 0:
+            for i in Scene_NormalStage.gObjList[6]:
+                if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                    self.isDelete = True
+                    break
+        elif self.type == 1:
+            for i in Scene_BossStage.gObjList[6]:
+                if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                    self.isDelete = True
+                    break

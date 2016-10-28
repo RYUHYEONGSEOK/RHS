@@ -221,13 +221,11 @@ class SpecialTile(Object_Tile.Tile):
             else:
                 for i in Scene_NormalStage.gObjList[4]:
                     #다트의 충돌
-                    if (i.itemNumber != 8):
-                        continue 
-                    if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
-                        i.isDelete = True
+                    if (i.itemNumber == 8):
+                        if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                            i.isDelete = True
         elif self.type == 1:
             for i in Scene_BossStage.gObjList[4]:
-                if (i.itemNumber != 8):
-                    continue 
-                if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
-                    i.isDelete = True
+                if (i.itemNumber == 8):
+                    if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
+                        i.isDelete = True

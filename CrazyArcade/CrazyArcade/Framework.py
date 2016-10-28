@@ -43,7 +43,7 @@ def run(_scene):
     global gRunning, gStack
     #메인의 초기화
     gRunning = True
-    open_canvas()
+    open_canvas(sync = True)
     gStack = [_scene]
     _scene.enter()
 

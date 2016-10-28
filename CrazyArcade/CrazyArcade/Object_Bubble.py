@@ -57,20 +57,13 @@ class Bubble(Object.GameObject):
                 #스페셜 타일 있는지 확인
                 isEnd = False
                 isNonDestroy = False
-                if self.type == 0:
-                    for j in Scene_NormalStage.gObjList[3]:
-                        if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
-                            if (j.breakingOption == 1):
-                                isNonDestroy = True
-                            isEnd = True
-                            break
-                elif self.type == 1:
-                    for j in Scene_BossStage.gObjList[3]:
-                        if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
-                            if (j.breakingOption == 1):
-                                isNonDestroy = True
-                            isEnd = True
-                            break
+                for j in Scene_NormalStage.gObjList[3]:
+                    if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
+                        if (j.breakingOption == 1):
+                            isNonDestroy = True
+                        isEnd = True
+                        break
+
                 if (i + 1 == self.power) or (isEnd == True):
                     if (isNonDestroy == False):
                         tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 1)
@@ -90,20 +83,12 @@ class Bubble(Object.GameObject):
                 # 스페셜 타일 있는지 확인
                 isEnd = False
                 isNonDestroy = False
-                if self.type == 0:
-                    for j in Scene_NormalStage.gObjList[3]:
-                        if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
-                            if (j.breakingOption == 1):
-                                isNonDestroy = True
-                            isEnd = True
-                            break
-                elif self.type == 1:
-                    for j in Scene_BossStage.gObjList[3]:
-                        if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
-                            if (j.breakingOption == 1):
-                                isNonDestroy = True
-                            isEnd = True
-                            break
+                for j in Scene_NormalStage.gObjList[3]:
+                   if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
+                       if (j.breakingOption == 1):
+                           isNonDestroy = True
+                       isEnd = True
+                       break
                 if (i + 1 == self.power) or (isEnd == True):
                     if (isNonDestroy == False):
                         tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 2)
@@ -123,20 +108,12 @@ class Bubble(Object.GameObject):
                 # 스페셜 타일 있는지 확인
                 isEnd = False
                 isNonDestroy = False
-                if self.type == 0:
-                    for j in Scene_NormalStage.gObjList[3]:
-                        if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
-                            if (j.breakingOption == 1):
-                                isNonDestroy = True
-                            isEnd = True
-                            break
-                elif self.type == 1:
-                    for j in Scene_BossStage.gObjList[3]:
-                        if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
-                            if (j.breakingOption == 1):
-                                isNonDestroy = True
-                            isEnd = True
-                            break
+                for j in Scene_NormalStage.gObjList[3]:
+                    if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
+                        if (j.breakingOption == 1):
+                            isNonDestroy = True
+                        isEnd = True
+                        break
                 if (i + 1 == self.power) or (isEnd == True):
                     if (isNonDestroy == False):
                         tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 3)
@@ -156,20 +133,12 @@ class Bubble(Object.GameObject):
                 # 스페셜 타일 있는지 확인
                 isEnd = False
                 isNonDestroy = False
-                if self.type == 0:
-                    for j in Scene_NormalStage.gObjList[3]:
-                        if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
-                            if (j.breakingOption == 1):
-                                isNonDestroy = True
-                            isEnd = True
-                            break
-                elif self.type == 1:
-                    for j in Scene_BossStage.gObjList[3]:
-                        if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
-                            if (j.breakingOption == 1):
-                                isNonDestroy = True
-                            isEnd = True
-                            break
+                for j in Scene_NormalStage.gObjList[3]:
+                    if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
+                        if (j.breakingOption == 1):
+                            isNonDestroy = True
+                        isEnd = True
+                        break
                 if (i + 1 == self.power) or (isEnd == True):
                     if (isNonDestroy == False):
                         tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 4)
@@ -184,65 +153,105 @@ class Bubble(Object.GameObject):
         elif self.type == 1: # 보스
             indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
             posX, posY = 40 + (indexX * 40), (600 - 60) - (40 * indexY)
-            # 가운데
+            #가운데
             tempBubbleEffect = Object_BubbleEffect.BubbleEffect(posX, posY, self.type, 0)
             tempBubbleEffect.enter()
             Scene_BossStage.gObjList[6].append(tempBubbleEffect)
-            # 상
+            #상
             for i in range(0, self.power):
                 tempX, tempY = posX, posY + (i + 1) * 40
-                # 끝 이펙트(만약에 타일을 만난다면 break)
+                # 끝 이펙트
                 if (indexY - (i + 1)) < 0:
                     break
-                if (i + 1 == self.power):
-                    tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 1)
-                    tempBubbleEffect.enter()
-                    Scene_BossStage.gObjList[6].append(tempBubbleEffect)
+                #스페셜 타일 있는지 확인
+                isEnd = False
+                isNonDestroy = False
+                for j in Scene_BossStage.gObjList[3]:
+                    if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
+                        if (j.breakingOption == 1):
+                            isNonDestroy = True
+                        isEnd = True
+                        break
+                if (i + 1 == self.power) or (isEnd == True):
+                    if (isNonDestroy == False):
+                        tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 1)
+                        tempBubbleEffect.enter()
+                        Scene_BossStage.gObjList[6].append(tempBubbleEffect)
                     break
-                # 중간 이펙트
+                #중간 이펙트
                 tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 5)
                 tempBubbleEffect.enter()
                 Scene_BossStage.gObjList[6].append(tempBubbleEffect)
-            # 하
+            #하
             for i in range(0, self.power):
                 tempX, tempY = posX, posY - (i + 1) * 40
                 # 끝 이펙트(만약에 타일을 만난다면 break)
                 if (indexY + (i + 1)) > 12:
                     break
-                if (i + 1 == self.power):
-                    tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 2)
-                    tempBubbleEffect.enter()
-                    Scene_BossStage.gObjList[6].append(tempBubbleEffect)
+                # 스페셜 타일 있는지 확인
+                isEnd = False
+                isNonDestroy = False
+                for j in Scene_BossStage.gObjList[3]:
+                    if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
+                        if (j.breakingOption == 1):
+                            isNonDestroy = True
+                        isEnd = True
+                        break
+                if (i + 1 == self.power) or (isEnd == True):
+                    if (isNonDestroy == False):
+                        tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 2)
+                        tempBubbleEffect.enter()
+                        Scene_BossStage.gObjList[6].append(tempBubbleEffect)
                     break
                 # 중간 이펙트
                 tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 6)
                 tempBubbleEffect.enter()
                 Scene_BossStage.gObjList[6].append(tempBubbleEffect)
-            # 우
+            #우
             for i in range(0, self.power):
                 tempX, tempY = posX + (i + 1) * 40, posY
                 # 끝 이펙트(만약에 타일을 만난다면 break)
                 if (indexX + (i + 1)) > 14:
                     break
-                if (i + 1 == self.power):
-                    tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 3)
-                    tempBubbleEffect.enter()
-                    Scene_BossStage.gObjList[6].append(tempBubbleEffect)
+                # 스페셜 타일 있는지 확인
+                isEnd = False
+                isNonDestroy = False
+                for j in Scene_BossStage.gObjList[3]:
+                   if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
+                       if (j.breakingOption == 1):
+                           isNonDestroy = True
+                       isEnd = True
+                       break
+                if (i + 1 == self.power) or (isEnd == True):
+                    if (isNonDestroy == False):
+                        tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 3)
+                        tempBubbleEffect.enter()
+                        Scene_BossStage.gObjList[6].append(tempBubbleEffect)
                     break
                 # 중간 이펙트
                 tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 7)
                 tempBubbleEffect.enter()
                 Scene_BossStage.gObjList[6].append(tempBubbleEffect)
-            # 좌
+            #좌
             for i in range(0, self.power):
                 tempX, tempY = posX - (i + 1) * 40, posY
                 # 끝 이펙트(만약에 타일을 만난다면 break)
                 if (indexX - (i + 1)) < 0:
                     break
-                if (i + 1 == self.power):
-                    tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 4)
-                    tempBubbleEffect.enter()
-                    Scene_BossStage.gObjList[6].append(tempBubbleEffect)
+                # 스페셜 타일 있는지 확인
+                isEnd = False
+                isNonDestroy = False
+                for j in Scene_BossStage.gObjList[3]:
+                    if (Manager_Collision.collisionPtInRect(j, tempX, tempY)) and (j.breakingOption != 2):
+                        if (j.breakingOption == 1):
+                            isNonDestroy = True
+                        isEnd = True
+                        break
+                if (i + 1 == self.power) or (isEnd == True):
+                    if (isNonDestroy == False):
+                        tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 4)
+                        tempBubbleEffect.enter()
+                        Scene_BossStage.gObjList[6].append(tempBubbleEffect)
                     break
                 # 중간 이펙트
                 tempBubbleEffect = Object_BubbleEffect.BubbleEffect(tempX, tempY, self.type, 8)
