@@ -32,6 +32,9 @@
     <Compile Include="Object.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Object_Banner.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Object_Bubble.py">
       <SubType>Code</SubType>
     </Compile>

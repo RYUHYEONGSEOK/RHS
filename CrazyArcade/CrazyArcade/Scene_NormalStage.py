@@ -9,6 +9,7 @@ import Object_Player
 import Object_Button
 import Object_Tile
 import Object_Special_Tile
+import Object_Banner
 
 NORMAL_STAGE = 0
 gSceneImage = None
@@ -19,14 +20,14 @@ gEvents = None
 gTimeImage = None
 gGameTime = None
 gCheckTime = None
-gIsHurryUp, gIsStart, gIsEnd = None, None, None#enter에서 초기화까지만 함
+gIsHurryUp, gIsStart, gIsEnd = None, None, None
 #버튼
 gExitButton = None
 #플레이어
 gPlayer = None
 #오브젝트관리 리스트
 gObjList = None
-PLAYER, MONSTER, BOSS_MONSTER, SPECIAL_TILE, ITEM, BUBBLE, BUBBLE_EFFECT = 0, 1, 2, 3, 4, 5, 6
+PLAYER, MONSTER, BOSS_MONSTER, SPECIAL_TILE, ITEM, BUBBLE, BUBBLE_EFFECT, BANNER = 0, 1, 2, 3, 4, 5, 6, 7
 #타일 관리 리스트(15x13)
 gTileList = None
 
@@ -52,7 +53,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
 
     # 오브젝트관리 리스트
     global gObjList
-    gObjList = {PLAYER: [gPlayer], MONSTER: [], BOSS_MONSTER: [], SPECIAL_TILE: [], ITEM: [], BUBBLE: [], BUBBLE_EFFECT: []}
+    gObjList = {PLAYER: [gPlayer], MONSTER: [], BOSS_MONSTER: [], SPECIAL_TILE: [], ITEM: [], BUBBLE: [], BUBBLE_EFFECT: [], BANNER: []}
 
     # 타일관리 리스트 => 나중에 파일입출력으로 불러오기
     global gTileList
@@ -118,30 +119,58 @@ def update():
     #게임의 시간 및 키보드이벤트
     global gEvents, gGameTime, gCheckTime
     global gObjList
-
+    #게임의 시간에 대한 논리연산
+    global gIsHurryUp, gIsStart, gIsEnd
+    #게임의 종료
+    if (gIsEnd == True) and (len(gObjList[BANNER]) < 1):
+        Framework.change_scene(Scene_Lobby)
+        return
     # 시간 1초씩 줄이기
-    if (len(gObjList[PLAYER]) > 0):
+    if (gIsEnd == False):
         if gCheckTime + 1 < time.time():
             gCheckTime = time.time()
             gGameTime -= 1
-            # 시간이 초과되면 0으로 초기화 하고 종료
             if gGameTime < 0:
                 gGameTime = 0
-                # 종료되는 과정 추가(지금은 임시방편)
-                Framework.change_scene(Scene_Lobby)
-                return
-    else: pass#배너추가
+                tempBanner = Object_Banner.Banner(400, 300, NORMAL_STAGE, 5)
+                tempBanner.enter()
+                gObjList[BANNER].append(tempBanner)
+                gIsEnd = True
+            elif (gGameTime == 45) and (gIsHurryUp == False):
+                tempBanner = Object_Banner.Banner(400, 300, NORMAL_STAGE, 1)
+                tempBanner.enter()
+                gObjList[BANNER].append(tempBanner)
+                gIsHurryUp = True
+    #시작배너
+    if gIsStart == False:
+        tempBanner = Object_Banner.Banner(400, 300, NORMAL_STAGE, 0)
+        tempBanner.enter()
+        gObjList[BANNER].append(tempBanner)
+        gIsStart = True
+    #승패
+    if gIsEnd == False:
+        #패배
+        if (len(gObjList[PLAYER]) < 1):
+            tempBanner = Object_Banner.Banner(400, 300, NORMAL_STAGE, 5)
+            tempBanner.enter()
+            gObjList[BANNER].append(tempBanner)
+            gIsEnd = True
+        #승리
+        #elif (len(gObjList[MONSTER]) < 1):
+        #    tempBanner = Object_Banner.Banner(400, 300, NORMAL_STAGE, 2)
+        #    tempBanner.enter()
+        #    gObjList[BANNER].append(tempBanner)
+        #    gIsEnd = True
 
     # 오브젝트관리 리스트 update
     for i in gObjList:
         for j in gObjList[i]:
             if (j.update(gEvents) == False):
                 gObjList[i].remove(j)
-            else:pass
 
     #나가기 버튼 로비로 이동
     global gExitButton
-    if gExitButton.update(gEvents) == 4:
+    if (gExitButton.update(gEvents) == 4) and (gIsEnd == False):
         Framework.change_scene(Scene_Lobby)
         return
 
