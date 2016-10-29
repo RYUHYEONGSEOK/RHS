@@ -99,7 +99,7 @@ class Item(Object.GameObject):
                     elif self.itemNumber == 2:
                         Scene_BossStage.gObjList[0][0].speed += 1
                     elif self.itemNumber == 3:
-                        Scene_BossStage.gObjList[0][0].power = 5
+                        Scene_BossStage.gObjList[0][0].power = 4
                     elif self.itemNumber == 4:
                         Scene_BossStage.gObjList[0][0].speed = 6
                     #바나나 나중에 추가

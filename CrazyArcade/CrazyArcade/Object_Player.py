@@ -19,22 +19,14 @@ class Player(Object.GameObject):
         self.image_size = 70
         #플레이어의 속성
         self.type = _type #노말은0, 보스면1
-        self.speed = 3
-        self.power = 2
-        self.bubbleCount = 2
-        self.isBushCheck = False
-        self.isSlidingPlayer = False
+        self.dir = None
+        self.speed, self.power, self.bubbleCount = 3, 1, 1
+        self.isBushCheck, self.isSlidingPlayer = False, False
+        self.birth, self.birthCount = None, 0
         #이미지(BIRTH STAND WALK BUBBLE BUBBLE_WALK DEAD)
         self.player_image = None
         self.player_state = 'STATE_BIRTH'
-        self.frame = None
-        self.frameMax = None
-        self.frameScene = None
-        self.dir = None
-        self.birth, self.birthCount = None, 0
-        self.frameTime = 0
-        #사용자의 입력값에 대한 판단을 하기위한 이벤트
-        self.events = None
+        self.frame, self.frameMax, self.frameScene, self.frameTime = None, None, None, 0
         #아이템 갯수변수
         self.bananaCount = _banana
         self.dartCount = _dart
@@ -60,8 +52,8 @@ class Player(Object.GameObject):
 
     def update(self, _events):
         if self.birth < 3:
-            self.itemMaxCheck()
             #쿨타임 함수 추가
+            self.itemMaxCheck()
 
             #바나나있으면 바나나부터 체크하고 else로 keycheck
             self.keycheck(_events)
@@ -69,7 +61,6 @@ class Player(Object.GameObject):
             #충돌체크(스페셜타일 + 벽)
             self.collisionSpecialTile()
             self.collisionWall()
-
             #현재상태에 대한 애니메이션 부분
             self.frame_move(self.player_state)
 
@@ -87,10 +78,7 @@ class Player(Object.GameObject):
                                         self.X, self.Y + 13)#마지막에 플레이어 위치 보정값
 
     def keycheck(self, _events):
-        #키값 대입
-        self.events = _events
-
-        for event in self.events:
+        for event in _events:
             if event.type == SDL_KEYDOWN:
                 #방향키
                 if event.key == SDLK_UP:
@@ -132,20 +120,32 @@ class Player(Object.GameObject):
                 #물풍선
                 if event.key == SDLK_SPACE:
                     #각 맵의 오브젝트 매니저에 넣기
-                    if (self.type == 0) and (self.birth == 0):#노말
+                    if (self.type == 0) and (self.birth == 0):
                         if (len(Scene_NormalStage.gObjList[5]) < self.bubbleCount):
                             indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
                             posX, posY = 40 + (indexX * 40), (600 - 60) - (40 * indexY)
-                            tempBubble = Object_Bubble.Bubble(posX, posY, self.type, self.power)
-                            tempBubble.enter()
-                            Scene_NormalStage.gObjList[5].append(tempBubble)
-                    elif (self.type == 1) and (self.birth == 0):#보스
+                            isCheck = False
+                            for i in Scene_NormalStage.gObjList[5]:
+                                if (Manager_Collision.collisionMiniIntersectRect(i, self)):
+                                    isCheck = True
+                                    break
+                            if isCheck == False:
+                                tempBubble = Object_Bubble.Bubble(posX, posY, self.type, self.power)
+                                tempBubble.enter()
+                                Scene_NormalStage.gObjList[5].append(tempBubble)
+                    elif (self.type == 1) and (self.birth == 0):
                         if (len(Scene_BossStage.gObjList[5]) < self.bubbleCount):
                             indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
                             posX, posY = 40 + (indexX * 40), (600 - 60) - (40 * indexY)
-                            tempBubble = Object_Bubble.Bubble(posX, posY, self.type, self.power)
-                            tempBubble.enter()
-                            Scene_BossStage.gObjList[5].append(tempBubble)
+                            isCheck = False
+                            for i in Scene_BossStage.gObjList[5]:
+                                if (Manager_Collision.collisionMiniIntersectRect(i, self)):
+                                    isCheck = True
+                                    break
+                            if isCheck == False:
+                                tempBubble = Object_Bubble.Bubble(posX, posY, self.type, self.power)
+                                tempBubble.enter()
+                                Scene_BossStage.gObjList[5].append(tempBubble)
                 #아이템사용
                 if event.key == SDLK_q:
                     if (self.ambulanceCount > 0) and (self.birth == 1):
@@ -292,13 +292,12 @@ class Player(Object.GameObject):
                     self.birth = 3
 
     def itemMaxCheck(self):
-        #속성
         if self.speed > 6:
             self.speed = 6
-        if self.bubbleCount > 5:
-            self.bubbleCount = 5
-        if self.power > 5:
-            self.power = 5
+        if self.bubbleCount > 4:
+            self.bubbleCount = 4
+        if self.power > 4:
+            self.power = 4
 
     def collisionWall(self):
         if self.X < 40:
@@ -309,7 +308,6 @@ class Player(Object.GameObject):
             self.X = 600
             self.isSlidingPlayer = False
             return
-
         if self.Y < 60:
             self.Y = 60
             self.isSlidingPlayer = False
