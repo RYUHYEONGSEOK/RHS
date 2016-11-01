@@ -4,7 +4,7 @@ from pico2d import *
 import Object
 
 class Tile(Object.GameObject):
-    def __init__(self, _x, _y, _type, _value, _option = 0):
+    def __init__(self, _x = 0, _y = 0, _type = 0, _value = 0, _option = 0):
         # 타일 위치 및 이미지와 충돌 체크용 사이즈
         self.X, self.Y = _x, _y
         self.sizeX, self.sizeY = 40, 40

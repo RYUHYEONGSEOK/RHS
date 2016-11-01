@@ -10,6 +10,7 @@ import Object_Button
 import Object_Tile
 import Object_Special_Tile
 import Object_Banner
+import Object_Monster
 
 NORMAL_STAGE = 0
 gSceneImage = None
@@ -57,30 +58,40 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
 
     # 타일관리 리스트 => 나중에 파일입출력으로 불러오기
     global gTileList
-    gTileList = {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: [], 12: []}
+    gTileList = []
     for i in range(0, 13):
         for j in range(0, 15):
             tempTile = Object_Tile.Tile(40 + (j * 40), (600 - 60) - (40 * i), NORMAL_STAGE, 1, 0)
             tempTile.enter()
-            gTileList[i].append(tempTile)
+            gTileList.append(tempTile)
 
     #스페셜 타일 생성 => 나중에 파일입출력으로 불러오기
-    #indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
-    #gTileList[indexY][indexX].changeOption(0)
     tempSpecialTile = Object_Special_Tile.SpecialTile(400, 300, NORMAL_STAGE, 0, 0)
     tempSpecialTile.enter()
     gObjList[SPECIAL_TILE].append(tempSpecialTile)
+    #indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
+    indexX, indexY = (int)((400 - 20) / 40), (int)((560 - 300) / 40)
+    gTileList[indexY * 13 + indexX].changeOption(1)
     tempSpecialTile = Object_Special_Tile.SpecialTile(440, 300, NORMAL_STAGE, 0, 1)
     tempSpecialTile.enter()
     gObjList[SPECIAL_TILE].append(tempSpecialTile)
+    indexX, indexY = (int)((440 - 20) / 40), (int)((560 - 300) / 40)
+    gTileList[indexY * 13 + indexX].changeOption(1)
     tempSpecialTile = Object_Special_Tile.SpecialTile(480, 300, NORMAL_STAGE, 0, 2)
     tempSpecialTile.enter()
     gObjList[SPECIAL_TILE].append(tempSpecialTile)
+    indexX, indexY = (int)((480 - 20) / 40), (int)((560 - 300) / 40)
+    gTileList[indexY * 13 + indexX].changeOption(1)
 
     # 버튼 객체 추가
     global gExitButton
     gExitButton = Object_Button.Button(717, (600 -577), 4)
     gExitButton.enter()
+
+    #몬스터 추가
+    tempMonster = Object_Monster.Monster(400, 100, NORMAL_STAGE)
+    tempMonster.enter()
+    gObjList[MONSTER].append(tempMonster)
 
 def exit():
     global gSceneImage, gCoverImage
@@ -104,8 +115,7 @@ def exit():
     # 타일관리 리스트
     global gTileList
     for i in gTileList:
-        for j in gTileList[i]:
-            gTileList[i].remove(j)
+        gTileList.remove(i)
 
     # 플레이어 삭제
     global gPlayer
@@ -185,8 +195,7 @@ def draw():
     # 타일관리 리스트의 draw
     global gTileList
     for i in gTileList:
-        for j in gTileList[i]:
-            j.draw()
+        i.draw()
 
     # 게임의 시간
     global gTimeImage, gGameTime

@@ -33,18 +33,16 @@ class SpecialTile(Object_Tile.Tile):
         self.isFrameMove = None
 
     def __del__(self):
-        self.exit()
-
-        if self.breakingOption == 0: pass
-        #터지면 타일의 옵션변경(len(Scene_NormalStage.gTileList) > indexY) 이걸로하면 왜 중간의 indexX가 바뀌는건가
+        self.exit() #아이템 드롭
+        #터지면 타일의 옵션변경
         indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
         if self.type == 0:
-            if len(Scene_NormalStage.gTileList[indexY]) > indexX:
-                Scene_NormalStage.gTileList[indexY][indexX].changeOption(0)
+            if len(Scene_NormalStage.gTileList) == (15 * 13):
+                Scene_NormalStage.gTileList[indexY * 13 + indexX].changeOption(0)
             #else: print('error')
         elif self.type == 1:
-            if len(Scene_BossStage.gTileList[indexY]) > indexX:
-                Scene_BossStage.gTileList[indexY][indexX].changeOption(0)
+            if len(Scene_BossStage.gTileList) == (15 * 13):
+                Scene_BossStage.gTileList[indexY * 13 + indexX].changeOption(0)
             #else: print('error')
 
     def enter(self):

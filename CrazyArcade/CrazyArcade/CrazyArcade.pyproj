@@ -26,6 +26,9 @@
     <Compile Include="Framework.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Manager_ASTAR.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Manager_Collision.py">
       <SubType>Code</SubType>
     </Compile>
@@ -33,6 +36,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Object_Banner.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Object_BossMonster.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Object_Bubble.py">
@@ -45,6 +51,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Object_Item.py" />
+    <Compile Include="Object_Monster.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Object_Player.py">
       <SubType>Code</SubType>
     </Compile>

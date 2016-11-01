@@ -41,15 +41,12 @@ class BubbleEffect(Object.GameObject):
         if (self.frameTime + 0.1 < time.time()):
             self.frameTime = time.time()
             self.frame += 1
-
             if self.frame > self.frameMax:
                 self.frame = 0
                 return False
-
         #충돌
         self.collisionPlayer()
         self.collisionBubble()
-        ##########################
 
     def draw(self):
         # 프레임이 시작하는 그림에서의 X좌표, Y좌표(Y좌표는 아래서부터 1) => 왼쪽 아래부터 오른쪽 위까지 하나를 그림
