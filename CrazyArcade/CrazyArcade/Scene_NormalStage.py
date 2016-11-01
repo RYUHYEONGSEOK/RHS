@@ -89,7 +89,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gExitButton.enter()
 
     #몬스터 추가
-    tempMonster = Object_Monster.Monster(400, 100, NORMAL_STAGE)
+    tempMonster = Object_Monster.Monster(480, 100, NORMAL_STAGE)
     tempMonster.enter()
     gObjList[MONSTER].append(tempMonster)
 
@@ -166,11 +166,11 @@ def update():
             gObjList[BANNER].append(tempBanner)
             gIsEnd = True
         #승리
-        #elif (len(gObjList[MONSTER]) < 1):
-        #    tempBanner = Object_Banner.Banner(400, 300, NORMAL_STAGE, 2)
-        #    tempBanner.enter()
-        #    gObjList[BANNER].append(tempBanner)
-        #    gIsEnd = True
+        elif (len(gObjList[MONSTER]) < 1):
+            tempBanner = Object_Banner.Banner(400, 300, NORMAL_STAGE, 2)
+            tempBanner.enter()
+            gObjList[BANNER].append(tempBanner)
+            gIsEnd = True
 
     # 오브젝트관리 리스트 update
     for i in gObjList:
@@ -235,3 +235,5 @@ def handle_events():
 
 def pause(): pass
 def resume(): pass
+
+def loadMap(): pass

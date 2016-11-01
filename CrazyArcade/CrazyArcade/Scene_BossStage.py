@@ -11,6 +11,7 @@ import Object_Tile
 import Object_Special_Tile
 import Object_Banner
 import Object_Monster
+import Object_BossMonster
 
 BOSS_STAGE = 1
 gSceneImage = None
@@ -61,7 +62,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gTileList = []
     for i in range(0, 13):
         for j in range(0, 15):
-            tempTile = Object_Tile.Tile(40 + (j * 40), (600 - 60) - (40 * i), NORMAL_STAGE, 1, 0)
+            tempTile = Object_Tile.Tile(40 + (j * 40), (600 - 60) - (40 * i), BOSS_STAGE, 1, 0)
             tempTile.enter()
             gTileList.append(tempTile)
 
@@ -79,7 +80,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gExitButton.enter()
 
     #몬스터 추가
-    tempMonster = Object_Monster.Monster(400, 100, NORMAL_STAGE)
+    tempMonster = Object_Monster.Monster(480, 100, BOSS_STAGE)
     tempMonster.enter()
     gObjList[MONSTER].append(tempMonster)
 
@@ -170,7 +171,7 @@ def update():
 
     #나가기 버튼 로비로 이동
     global gExitButton
-    if g(gExitButton.update(gEvents) == 4) and (gIsEnd == False):
+    if (gExitButton.update(gEvents) == 4) and (gIsEnd == False):
         Framework.change_scene(Scene_Lobby)
         return
 
@@ -224,3 +225,5 @@ def handle_events():
 
 def pause(): pass
 def resume(): pass
+
+def loadMap(): pass

@@ -22,9 +22,9 @@ class Node:
 gStartIndex = 0
 gGoalIndex = 0
 #open, close, best List
-gOpenList = [ Node(0) ]
-gCloseList = [ Node(0) ]
-gBestList = [ 0 ]
+gOpenList = [ ]
+gCloseList = [ ]
+gBestList = [ ]
 
 def AStarStart(_startX, _startY, _goalX, _goalY, _type):
     #같은지 체크
