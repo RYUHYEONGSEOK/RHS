@@ -15,7 +15,7 @@ class SpecialTile(Object_Tile.Tile):
     def __init__(self, _x, _y, _type, _imagevalue = 0, _breakingOption = 0):
         # 타일 위치 및 이미지와 충돌 체크용 사이즈
         self.X, self.Y = _x, _y
-        self.sizeX, self.sizeY = 40, 40
+        self.sizeX, self.sizeY = 38, 38
         self.imageSizeX, self.imageSizeY = None, None
         # 타일의 속성
         self.type = _type  # 노말은0, 보스면1
@@ -38,12 +38,10 @@ class SpecialTile(Object_Tile.Tile):
         indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
         if self.type == 0:
             if len(Scene_NormalStage.gTileList) == (15 * 13):
-                Scene_NormalStage.gTileList[indexY * 13 + indexX].changeOption(0)
-            #else: print('error')
+                Scene_NormalStage.gTileList[indexY * 15 + indexX].changeOption(0)
         elif self.type == 1:
             if len(Scene_BossStage.gTileList) == (15 * 13):
-                Scene_BossStage.gTileList[indexY * 13 + indexX].changeOption(0)
-            #else: print('error')
+                Scene_BossStage.gTileList[indexY * 15 + indexX].changeOption(0)
 
     def enter(self):
         # 이미지 사용용도의 변수
@@ -113,7 +111,6 @@ class SpecialTile(Object_Tile.Tile):
 
     def exit(self):
         del (self.specialTile_image)
-
         #아이템의 드랍
         if self.breakingOption == 0:
             if self.dropItem < 50:

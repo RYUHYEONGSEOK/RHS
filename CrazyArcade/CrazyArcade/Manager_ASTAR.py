@@ -64,7 +64,6 @@ def MakeRoute(_type):
     if _type == 0:
         #맵의 인덱스 + 옵션값0(지나감) + 오픈,클로즈리스트확인
         while(True):
-            # X 13, Y 15
             #상
             tempIndex = parentNode.indexNumber - 13
             if (parentNode.indexNumber - 13 >= 0) and (Scene_NormalStage.gTileList[tempIndex].option != 1) and (CheckList(tempIndex)):

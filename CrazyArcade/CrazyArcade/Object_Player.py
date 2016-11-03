@@ -56,7 +56,17 @@ class Player(Object.GameObject):
             self.itemMaxCheck()
 
             #바나나있으면 바나나부터 체크하고 else로 keycheck
-            self.keycheck(_events)
+            if self.isSlidingPlayer:
+                if self.dir == 0:
+                    self.Y += 6
+                elif self.dir == 1:
+                    self.Y -= 6
+                elif self.dir == 2:
+                    self.X += 6
+                elif self.dir == 3:
+                    self.X -= 6
+            else:
+                self.keycheck(_events)
 
             #충돌체크(스페셜타일 + 벽)
             self.collisionSpecialTile()
@@ -174,6 +184,16 @@ class Player(Object.GameObject):
                 if event.key == SDLK_r:
                     if (self.bananaCount > 0) and (self.birth == 0):
                         self.bananaCount -= 1
+                    else: return
+                    #바나나생성
+                    indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
+                    posX, posY = 40 + (indexX * 40), (600 - 60) - (40 * indexY)
+                    tempBanana = Object_Item.Item(posX, posY, self.type, 7, self.dir)
+                    tempBanana.enter()
+                    if self.type == 0:
+                        Scene_NormalStage.gObjList[4].append(tempBanana)
+                    elif self.type == 1:
+                        Scene_BossStage.gObjList[4].append(tempBanana)
                 #치트키(모든 아이템 최대 + 속성 최대)
                 if event.key == SDLK_RETURN:
                     if self.birth == 0:
@@ -326,14 +346,13 @@ class Player(Object.GameObject):
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(self, i)
                 if (isCollision == True) and (i.breakingOption != 2):
                     Manager_Collision.collisionAABB(self, i, left, top, right, bottom)
-                    break
+                    self.isSlidingPlayer = False
                 elif (isCollision == True) and (i.breakingOption == 2):
                     self.isBushCheck = True
                     i.isPlayerCollision = True
-                    break
         elif self.type == 1:
             for i in Scene_BossStage.gObjList[3]:
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(self, i)
                 if (isCollision == True) and (i.breakingOption != 2):
                     Manager_Collision.collisionAABB(self, i, left, top, right, bottom)
-                    break
+                    self.isSlidingPlayer = False

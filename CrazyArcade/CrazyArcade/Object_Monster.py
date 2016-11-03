@@ -62,7 +62,6 @@ class Monster(Object.GameObject):
         self.collisionPlayer()
         self.collisionBubble()
         self.collisionBubbleEffect()
-
         #프레임 움직임
         if (self.frameTime + 0.25 < time.time()):
             self.frameTime = time.time()
@@ -77,7 +76,6 @@ class Monster(Object.GameObject):
         #삭제처리
         if self.isDelete == True:
             return False
-        
 
         #에이스타 만들기
         #if self.type == 0:
@@ -149,12 +147,10 @@ class Monster(Object.GameObject):
                         self.dir = 1
                     elif self.dir == 3:
                         self.dir = 0
-                    break
                 elif (isCollision == True) and (i.breakingOption == 2):
                     self.isBushCheck = True
                     if i.isPlayerCollision == False:
                         i.isPlayerCollision = True
-                    break
         elif self.type == 1:
             for i in Scene_BossStage.gObjList[3]:
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(self, i)
@@ -168,7 +164,6 @@ class Monster(Object.GameObject):
                         self.dir = 1
                     elif self.dir == 3:
                         self.dir = 0
-                    break
 
     def collisionPlayer(self):
         if self.type == 0:
@@ -177,6 +172,7 @@ class Monster(Object.GameObject):
                     Scene_NormalStage.gObjList[0][0].birth = 1
                     Scene_NormalStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     self.isCollision = True
+                    Scene_NormalStage.gObjList[0][0].isSlidingPlayer = False
                     self.state = 1
         elif self.type == 1:
             if (len(Scene_BossStage.gObjList[0]) > 0):
@@ -184,6 +180,7 @@ class Monster(Object.GameObject):
                     Scene_BossStage.gObjList[0][0].birth = 1
                     Scene_BossStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     self.isCollision = True
+                    Scene_BossStage.gObjList[0][0].isSlidingPlayer = False
                     self.state = 1
 
     def collisionBubble(self):

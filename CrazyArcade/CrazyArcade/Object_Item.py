@@ -19,6 +19,7 @@ class Item(Object.GameObject):
         #다트의 경우에는 방향(상하우좌 0 1 2 3)
         self.dir = _dir
         self.isDelete = False
+        self.isCollision = False
         # 이미지 사용용도의 변수
         self.item_image = None
         self.isBushCheck = False
@@ -37,6 +38,19 @@ class Item(Object.GameObject):
         del (self.item_image)
 
     def update(self, _events):
+        #바나나에서 충돌체크되는지 체크
+        if self.itemNumber == 7:
+            if self.isCollision == False:
+                if self.type == 0:
+                    tempX, tempY = Scene_NormalStage.gObjList[0][0].X - self.X, Scene_NormalStage.gObjList[0][0].Y - self.Y
+                    tempdistance = math.sqrt((tempX * tempX) + (tempY * tempY))
+                    if tempdistance > 42:
+                        self.isCollision = True
+                elif self.type == 1:
+                    tempX, tempY = Scene_BossStage.gObjList[0][0].X - self.X, Scene_BossStage.gObjList[0][0].Y - self.Y
+                    tempdistance = math.sqrt((tempX * tempX) + (tempY * tempY))
+                    if tempdistance > 42:
+                        self.isCollision = True
         #다트만 움직임을 가짐
         if self.itemNumber == 8:
             if self.dir == 0:
@@ -74,7 +88,6 @@ class Item(Object.GameObject):
         if self.type == 0:
             if (len(Scene_NormalStage.gObjList[0]) > 0):
                 if(Manager_Collision.collisionMiniIntersectRect(self, Scene_NormalStage.gObjList[0][0]) == True):
-                    self.isDelete = True
                     if self.itemNumber == 0:
                         Scene_NormalStage.gObjList[0][0].bubbleCount += 1
                     elif self.itemNumber == 1:
@@ -85,13 +98,14 @@ class Item(Object.GameObject):
                         Scene_NormalStage.gObjList[0][0].power = 5
                     elif self.itemNumber == 4:
                         Scene_NormalStage.gObjList[0][0].speed = 6
-                    #바나나 나중에 추가
                     elif self.itemNumber == 7:
-                        pass
+                        if self.isCollision == True:
+                            Scene_NormalStage.gObjList[0][0].isSlidingPlayer = True
+                        else: return
+                    self.isDelete = True
         elif self.type == 1:
             if (len(Scene_BossStage.gObjList[0]) > 0):
                 if(Manager_Collision.collisionMiniIntersectRect(self, Scene_BossStage.gObjList[0][0]) == True):
-                    self.isDelete = True
                     if self.itemNumber == 0:
                         Scene_BossStage.gObjList[0][0].bubbleCount += 1
                     elif self.itemNumber == 1:
@@ -102,9 +116,11 @@ class Item(Object.GameObject):
                         Scene_BossStage.gObjList[0][0].power = 4
                     elif self.itemNumber == 4:
                         Scene_BossStage.gObjList[0][0].speed = 6
-                    #바나나 나중에 추가
                     elif self.itemNumber == 7:
-                        pass
+                        if self.isCollision == True:
+                            Scene_BossStage.gObjList[0][0].isSlidingPlayer = True
+                        else: return
+                    self.isDelete = True
 
     def collisionBubble(self):
         if self.type == 0:

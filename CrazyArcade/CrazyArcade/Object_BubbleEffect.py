@@ -17,6 +17,7 @@ class BubbleEffect(Object.GameObject):
         #풍선효과의 속성
         self.type = _type  # 노말은0, 보스면1
         self.dir = _dir #0가운데,1위,2아래,3오른쪽,4왼쪽,5위연장,6아래연장,7오른쪽연장,8왼쪽연장
+        self.isDamage = False
         # 이미지 사용용도의 변수
         self.bubbleEffect_image = None
         self.frame = None
@@ -61,6 +62,7 @@ class BubbleEffect(Object.GameObject):
                     Scene_NormalStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     Scene_NormalStage.gObjList[0][0].birth = 1
                     Scene_NormalStage.gObjList[0][0].frame = 0
+                    Scene_NormalStage.gObjList[0][0].isSlidingPlayer = False
         elif self.type == 1:
             if (len(Scene_BossStage.gObjList[0]) > 0):
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(Scene_BossStage.gObjList[0][0], self)
@@ -68,6 +70,7 @@ class BubbleEffect(Object.GameObject):
                     Scene_BossStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     Scene_BossStage.gObjList[0][0].birth = 1
                     Scene_BossStage.gObjList[0][0].frame = 0
+                    Scene_BossStage.gObjList[0][0].isSlidingPlayer = False
 
     def collisionBubble(self):
         if self.type == 0:
@@ -75,11 +78,8 @@ class BubbleEffect(Object.GameObject):
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(i, self)
                 if isCollision == True:
                     Scene_NormalStage.gObjList[5].remove(i)
-                    break
         elif self.type == 1:
             for i in Scene_BossStage.gObjList[5]:
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(i, self)
                 if isCollision == True:
                     Scene_BossStage.gObjList[5].remove(i)
-                    break
-

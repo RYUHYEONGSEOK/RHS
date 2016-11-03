@@ -90,12 +90,13 @@ class Bubble(Object.GameObject):
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(Scene_NormalStage.gObjList[0][0], self)
                 if (isCollision == True) and (self.isCollision == True):
                     Manager_Collision.collisionAABB(Scene_NormalStage.gObjList[0][0], self, left, top, right, bottom)
-
+                    Scene_NormalStage.gObjList[0][0].isSlidingPlayer = False
         elif self.type == 1:
             if (len(Scene_BossStage.gObjList[0]) > 0):
                 isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(Scene_BossStage.gObjList[0][0], self)
                 if (isCollision == True) and (self.isCollision == True):
                      Manager_Collision.collisionAABB(Scene_BossStage.gObjList[0][0], self, left, top, right, bottom)
+                     Scene_BossStage.gObjList[0][0].isSlidingPlayer = False
 
     def createBubbleEffect(self):
         isTopEnd, isBottomEnd, isLeftEnd, isRightEnd = False, False, False, False
