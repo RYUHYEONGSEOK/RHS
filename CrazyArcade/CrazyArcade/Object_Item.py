@@ -12,7 +12,7 @@ class Item(Object.GameObject):
     def __init__(self, _x, _y, _type, _itemNum, _dir = 0):
         #아이템 위치 및 이미지와 충돌 체크용 사이즈
         self.X, self.Y = _x, _y
-        self.sizeX, self.sizeY = 38, 38
+        self.sizeX, self.sizeY = 30, 30
         #아이템의 속성(노말은0, 보스면1)
         #아이템의 번호(0~8) : 물풍선,파워,신발,파워최대,속도최대,제외,제외,바나나,다트
         self.type, self.itemNumber = _type, _itemNum

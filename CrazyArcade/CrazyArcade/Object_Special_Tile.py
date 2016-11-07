@@ -113,7 +113,7 @@ class SpecialTile(Object_Tile.Tile):
         del (self.specialTile_image)
         #아이템의 드랍
         if self.breakingOption == 0:
-            if self.dropItem < 50:
+            if self.dropItem < 25:
                 tempItemNum = (int)(self.dropItem / 10)
                 if self.type == 0:
                     tempItem = Object_Item.Item(self.X, self.Y, self.type, tempItemNum)

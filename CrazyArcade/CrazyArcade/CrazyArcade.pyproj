@@ -32,6 +32,9 @@
     <Compile Include="Manager_Collision.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Manager_Sound.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Object.py">
       <SubType>Code</SubType>
     </Compile>
