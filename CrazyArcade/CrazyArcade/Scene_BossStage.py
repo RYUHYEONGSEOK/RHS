@@ -62,27 +62,39 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gTileList = []
     for i in range(0, 13):
         for j in range(0, 15):
-            tempTile = Object_Tile.Tile(40 + (j * 40), (600 - 60) - (40 * i), BOSS_STAGE, 1, 0)
-            tempTile.enter()
-            gTileList.append(tempTile)
+            if (i > 7) and (i < 12) and (j > 0) and (j < 14):
+                tempTile = Object_Tile.Tile(40 + (j * 40), (600 - 60) - (40 * i), BOSS_STAGE, 3, 0)
+                tempTile.enter()
+                gTileList.append(tempTile)
+            else:
+                tempTile = Object_Tile.Tile(40 + (j * 40), (600 - 60) - (40 * i), BOSS_STAGE, 1, 0)
+                tempTile.enter()
+                gTileList.append(tempTile)
 
     # 스페셜 타일 생성 => 나중에 파일입출력으로 불러오기
-    tempSpecialTile = Object_Special_Tile.SpecialTile(400, 300, BOSS_STAGE, 0, 0)
-    tempSpecialTile.enter()
-    gObjList[SPECIAL_TILE].append(tempSpecialTile)
-    #indexX, indexY = (int)((self.X - 20) / 40), (int)((560 - self.Y) / 40)
-    indexX, indexY = (int)((400 - 20) / 40), (int)((560 - 300) / 40)
-    gTileList[indexY * 13 + indexX].changeOption(1)
+    for i in range(0, 13):
+        for j in range(0, 15):
+            if (i > 0) and (i < 4) and (j > 0) and (j < 14) and ((i % 2) == 1):
+                if (j == 1) or (j == 13):
+                    tempSpecialTile = Object_Special_Tile.SpecialTile(40 + (j * 40), (600 - 60) - (40 * i), BOSS_STAGE, 0, 1)
+                    tempSpecialTile.enter()
+                    gObjList[SPECIAL_TILE].append(tempSpecialTile)
+                    gTileList[i * 15 + j].changeOption(1)
+                else:
+                    tempSpecialTile = Object_Special_Tile.SpecialTile(40 + (j * 40), (600 - 60) - (40 * i), BOSS_STAGE, 0, 0)
+                    tempSpecialTile.enter()
+                    gObjList[SPECIAL_TILE].append(tempSpecialTile)
+                    gTileList[i * 15 + j].changeOption(1)
 
     # 버튼 객체 추가
     global gExitButton
-    gExitButton = Object_Button.Button(717, (600 -577), 4)
+    gExitButton = Object_Button.Button(717, (600 - 577), 4)
     gExitButton.enter()
 
-    #몬스터 추가
-    tempMonster = Object_Monster.Monster(480, 100, BOSS_STAGE)
-    tempMonster.enter()
-    gObjList[MONSTER].append(tempMonster)
+    #보스몬스터 추가
+    tempBossMonster = Object_BossMonster.BossMonster(320, 160, BOSS_STAGE, 3)
+    tempBossMonster.enter()
+    gObjList[BOSS_MONSTER].append(tempBossMonster)
 
 def exit():
     global gSceneImage, gCoverImage
@@ -98,15 +110,18 @@ def exit():
     for i in gObjList:
         for j in gObjList[i]:
             gObjList[i].remove(j)
+        gObjList[i].clear()
     # 오브젝트관리 리스트 2번째 삭제
     for i in gObjList:
         for j in gObjList[i]:
             gObjList[i].remove(j)
+        gObjList[i].clear()
 
     # 타일관리 리스트
     global gTileList
     for i in gTileList:
         gTileList.remove(i)
+    gTileList.clear()
 
     # 플레이어 삭제
     global gPlayer
@@ -133,18 +148,18 @@ def update():
             gGameTime -= 1
             if gGameTime < 0:
                 gGameTime = 0
-                tempBanner = Object_Banner.Banner(400, 300, BOSS_STAGE, 5)
+                tempBanner = Object_Banner.Banner(320, 300, BOSS_STAGE, 5)
                 tempBanner.enter()
                 gObjList[BANNER].append(tempBanner)
                 gIsEnd = True
             elif (gGameTime == 45) and (gIsHurryUp == False):
-                tempBanner = Object_Banner.Banner(400, 300, BOSS_STAGE, 1)
+                tempBanner = Object_Banner.Banner(320, 300, BOSS_STAGE, 1)
                 tempBanner.enter()
                 gObjList[BANNER].append(tempBanner)
                 gIsHurryUp = True
     #시작배너
     if gIsStart == False:
-        tempBanner = Object_Banner.Banner(400, 300, BOSS_STAGE, 0)
+        tempBanner = Object_Banner.Banner(320, 300, BOSS_STAGE, 0)
         tempBanner.enter()
         gObjList[BANNER].append(tempBanner)
         gIsStart = True
@@ -152,16 +167,16 @@ def update():
     if gIsEnd == False:
         #패배
         if (len(gObjList[PLAYER]) < 1):
-            tempBanner = Object_Banner.Banner(400, 300, BOSS_STAGE, 5)
+            tempBanner = Object_Banner.Banner(320, 300, BOSS_STAGE, 5)
             tempBanner.enter()
             gObjList[BANNER].append(tempBanner)
             gIsEnd = True
         #승리
-        #elif (len(gObjList[BOSS_MONSTER]) < 1):
-        #    tempBanner = Object_Banner.Banner(400, 300, BOSS_STAGE, 2)
-        #    tempBanner.enter()
-        #    gObjList[BANNER].append(tempBanner)
-        #    gIsEnd = True
+        elif (len(gObjList[BOSS_MONSTER]) < 1):
+            tempBanner = Object_Banner.Banner(320, 300, BOSS_STAGE, 2)
+            tempBanner.enter()
+            gObjList[BANNER].append(tempBanner)
+            gIsEnd = True
 
     # 오브젝트관리 리스트 update
     for i in gObjList:
