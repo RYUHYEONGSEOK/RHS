@@ -30,7 +30,7 @@ class Banner(Object.GameObject):
 
     def update(self, _events):
         #3초 지나면 삭제
-        if (self.start_time + 2 < time.time()):
+        if (self.start_time + 3 < time.time()):
             self.start_time = time.time()
             self.isDelete = True
         

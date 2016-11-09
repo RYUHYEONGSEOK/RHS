@@ -6,6 +6,7 @@ import Scene_NormalStage
 import Scene_BossStage
 
 import Manager_Collision
+import Manager_Sound
 
 import Object
 import Object_Bubble

@@ -5,6 +5,7 @@ import time
 
 #import Manager_ASTAR
 import Manager_Collision
+import Manager_Sound
 
 import Scene_NormalStage
 import Scene_BossStage
@@ -36,6 +37,8 @@ class Monster(Object.GameObject):
 
     def __del__(self):
         self.exit()
+        #사운드
+        Manager_Sound.PlayEffectSound('MONSTER_DIE')
 
     def enter(self):
         # 이미지 사용용도의 변수
@@ -168,7 +171,8 @@ class Monster(Object.GameObject):
     def collisionPlayer(self):
         if self.type == 0:
             if (len(Scene_NormalStage.gObjList[0]) > 0):
-                if (Manager_Collision.collisionMiniIntersectRect(self, Scene_NormalStage.gObjList[0][0]) == True):
+                if (Manager_Collision.collisionMiniIntersectRect(self, Scene_NormalStage.gObjList[0][0]) == True) \
+                and (Scene_NormalStage.gObjList[0][0].birth == 0):
                     Scene_NormalStage.gObjList[0][0].birth = 1
                     Scene_NormalStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     self.isCollision = True
@@ -176,7 +180,8 @@ class Monster(Object.GameObject):
                     self.state = 1
         elif self.type == 1:
             if (len(Scene_BossStage.gObjList[0]) > 0):
-                if (Manager_Collision.collisionMiniIntersectRect(self, Scene_BossStage.gObjList[0][0]) == True):
+                if (Manager_Collision.collisionMiniIntersectRect(self, Scene_BossStage.gObjList[0][0]) == True) \
+                    and (Scene_BossStage.gObjList[0][0].birth == 0):
                     Scene_BossStage.gObjList[0][0].birth = 1
                     Scene_BossStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     self.isCollision = True
