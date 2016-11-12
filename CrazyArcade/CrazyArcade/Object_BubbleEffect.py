@@ -57,16 +57,14 @@ class BubbleEffect(Object.GameObject):
     def collisionPlayer(self):
         if self.type == 0:
             if (len(Scene_NormalStage.gObjList[0]) > 0):
-                isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(Scene_NormalStage.gObjList[0][0], self)
-                if (isCollision == True) and (Scene_NormalStage.gObjList[0][0].birth == 0):
+                if (Scene_NormalStage.gObjList[0][0].birth == 0) and (Manager_Collision.collisionMiniIntersectRect(Scene_NormalStage.gObjList[0][0], self)):
                     Scene_NormalStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     Scene_NormalStage.gObjList[0][0].birth = 1
                     Scene_NormalStage.gObjList[0][0].frame = 0
                     Scene_NormalStage.gObjList[0][0].isSlidingPlayer = False
         elif self.type == 1:
             if (len(Scene_BossStage.gObjList[0]) > 0):
-                isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(Scene_BossStage.gObjList[0][0], self)
-                if (isCollision == True) and (Scene_BossStage.gObjList[0][0].birth == 0):
+                if (Scene_BossStage.gObjList[0][0].birth == 0) and (Manager_Collision.collisionMiniIntersectRect(Scene_BossStage.gObjList[0][0], self)):
                     Scene_BossStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     Scene_BossStage.gObjList[0][0].birth = 1
                     Scene_BossStage.gObjList[0][0].frame = 0
@@ -75,11 +73,9 @@ class BubbleEffect(Object.GameObject):
     def collisionBubble(self):
         if self.type == 0:
             for i in Scene_NormalStage.gObjList[5]:
-                isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(i, self)
-                if isCollision == True:
+                if Manager_Collision.collisionMiniIntersectRect(i, self):
                     Scene_NormalStage.gObjList[5].remove(i)
         elif self.type == 1:
             for i in Scene_BossStage.gObjList[5]:
-                isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(i, self)
-                if isCollision == True:
+                if Manager_Collision.collisionMiniIntersectRect(i, self):
                     Scene_BossStage.gObjList[5].remove(i)

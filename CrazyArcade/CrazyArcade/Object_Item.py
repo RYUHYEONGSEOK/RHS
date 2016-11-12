@@ -128,22 +128,18 @@ class Item(Object.GameObject):
                 if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
                     self.isDelete = True
                     i.birth = 3
-                    break
         elif self.type == 1:
             for i in Scene_BossStage.gObjList[5]:
                 if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
                     self.isDelete = True
                     i.birth = 3
-                    break
 
     def collisionBubbleEffect(self):
         if self.type == 0:
             for i in Scene_NormalStage.gObjList[6]:
                 if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
                     self.isDelete = True
-                    break
         elif self.type == 1:
             for i in Scene_BossStage.gObjList[6]:
                 if (Manager_Collision.collisionMiniIntersectRect(i, self) == True):
                     self.isDelete = True
-                    break

@@ -5,6 +5,8 @@ import time
 import Framework
 import Scene_Lobby
 
+import Manager_Sound
+
 import Object_Player
 import Object_Button
 import Object_Tile
@@ -96,6 +98,9 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     tempBossMonster.enter()
     gObjList[BOSS_MONSTER].append(tempBossMonster)
 
+    # 사운드
+    Manager_Sound.PlayBGMSound('BGM_MAP_2_0')
+
 def exit():
     global gSceneImage, gCoverImage
     del(gSceneImage)
@@ -131,6 +136,12 @@ def exit():
     global gExitButton
     del(gExitButton)
 
+    #사운드
+    if gIsHurryUp == True:
+        Manager_Sound.StopBGMSound('BGM_MAP_2_1')
+    elif gIsHurryUp == False:
+        Manager_Sound.StopBGMSound('BGM_MAP_2_0')
+
 def update():
     # 게임의 시간 및 키보드이벤트
     global gEvents, gGameTime, gCheckTime
@@ -152,17 +163,23 @@ def update():
                 tempBanner.enter()
                 gObjList[BANNER].append(tempBanner)
                 gIsEnd = True
+                Manager_Sound.PlayEffectSound('LOSE')
             elif (gGameTime == 45) and (gIsHurryUp == False):
                 tempBanner = Object_Banner.Banner(320, 300, BOSS_STAGE, 1)
                 tempBanner.enter()
                 gObjList[BANNER].append(tempBanner)
                 gIsHurryUp = True
+                #사운드
+                Manager_Sound.StopBGMSound('BGM_MAP_2_0')
+                Manager_Sound.PlayBGMSound('BGM_MAP_2_1')
+                Manager_Sound.PlayEffectSound('HURRYUP')
     #시작배너
     if gIsStart == False:
         tempBanner = Object_Banner.Banner(320, 300, BOSS_STAGE, 0)
         tempBanner.enter()
         gObjList[BANNER].append(tempBanner)
         gIsStart = True
+        Manager_Sound.PlayEffectSound('START')
     #승패
     if gIsEnd == False:
         #패배
@@ -171,12 +188,14 @@ def update():
             tempBanner.enter()
             gObjList[BANNER].append(tempBanner)
             gIsEnd = True
+            Manager_Sound.PlayEffectSound('LOSE')
         #승리
         elif (len(gObjList[BOSS_MONSTER]) < 1):
             tempBanner = Object_Banner.Banner(320, 300, BOSS_STAGE, 2)
             tempBanner.enter()
             gObjList[BANNER].append(tempBanner)
             gIsEnd = True
+            Manager_Sound.PlayEffectSound('WIN')
 
     # 오브젝트관리 리스트 update
     for i in gObjList:
