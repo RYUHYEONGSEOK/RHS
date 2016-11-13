@@ -56,6 +56,8 @@ class Player(Object.GameObject):
             #쿨타임 함수 추가
             self.itemMaxCheck()
 
+            #Manager_Sound.PlayEffectSound('CHAR_FIXED')
+
             #바나나있으면 바나나부터 체크하고 else로 keycheck
             if self.isSlidingPlayer:
                 if self.dir == 0:
@@ -99,7 +101,6 @@ class Player(Object.GameObject):
                         self.player_state = 'STATE_WALK'
                     elif self.birth == 1:
                         self.dir = 0
-                        self.frame, self.frameMax = 0, 3
                         self.player_state = 'STATE_BUBBLE_WALK'
                 elif event.key == SDLK_DOWN:
                     if self.birth == 0:
@@ -108,7 +109,6 @@ class Player(Object.GameObject):
                         self.player_state = 'STATE_WALK'
                     elif self.birth == 1:
                         self.dir = 1
-                        self.frame, self.frameMax = 0, 3
                         self.player_state = 'STATE_BUBBLE_WALK'
                 if event.key == SDLK_RIGHT:
                     if self.birth == 0:
@@ -117,7 +117,6 @@ class Player(Object.GameObject):
                         self.player_state = 'STATE_WALK'
                     elif self.birth == 1:
                         self.dir = 2
-                        self.frame, self.frameMax = 0, 3
                         self.player_state = 'STATE_BUBBLE_WALK'
                 elif event.key == SDLK_LEFT:
                     if self.birth == 0:
@@ -126,7 +125,6 @@ class Player(Object.GameObject):
                         self.player_state = 'STATE_WALK'
                     elif self.birth == 1:
                         self.dir = 3
-                        self.frame, self.frameMax = 0, 3
                         self.player_state = 'STATE_BUBBLE_WALK'
                 #물풍선
                 if event.key == SDLK_SPACE:
@@ -166,6 +164,8 @@ class Player(Object.GameObject):
                         self.player_state = 'STATE_BIRTH'
                         self.frameScene = 5
                         self.frame = 0
+                        Manager_Sound.PlayEffectSound('CHAR_REVIVAL')
+                        
                 if event.key == SDLK_w:
                     if (self.dartCount > 0) and (self.birth == 0):
                         self.dartCount -= 1
@@ -175,6 +175,7 @@ class Player(Object.GameObject):
                     posX, posY = 40 + (indexX * 40), (600 - 60) - (40 * indexY)
                     tempDart = Object_Item.Item(posX, posY, self.type, 8, self.dir)
                     tempDart.enter()
+                    Manager_Sound.PlayEffectSound('ITEM_DART')
                     if self.type == 0:
                         Scene_NormalStage.gObjList[4].append(tempDart)
                     elif self.type == 1:
@@ -191,6 +192,7 @@ class Player(Object.GameObject):
                     posX, posY = 40 + (indexX * 40), (600 - 60) - (40 * indexY)
                     tempBanana = Object_Item.Item(posX, posY, self.type, 7, self.dir)
                     tempBanana.enter()
+                    Manager_Sound.PlayEffectSound('ITEM_ON')
                     if self.type == 0:
                         Scene_NormalStage.gObjList[4].append(tempBanana)
                     elif self.type == 1:
@@ -203,6 +205,7 @@ class Player(Object.GameObject):
                         self.birth = 1
                         self.frame = 0
                         self.player_state = 'STATE_BUBBLE'
+                        Manager_Sound.PlayEffectSound('CHAR_FIXED')
             elif event.type == SDL_KEYUP:
                 #방향키에서 손을 때는 경우
                 if self.player_state == 'STATE_WALK':
@@ -269,29 +272,36 @@ class Player(Object.GameObject):
                 if self.frame > self.frameMax:
                     self.frame = 0
                     self.birthCount += 1
+                    if self.birthCount != 3:
+                        Manager_Sound.PlayEffectSound('CHAR_FIXED')
                     if self.birthCount > 2:
                         self.birthCount = 0
                         self.birth = 2
                         self.player_state = 'STATE_DEAD'
                         self.frameScene = 6
                         self.frameMax = 6
+                        Manager_Sound.PlayEffectSound('CHAR_DIE')
 
         elif self.player_state == 'STATE_BUBBLE_WALK':
             if self.frameScene != 4:
                 self.frameScene = 4
 
             if self.frameTime + 0.5 < time.time():
+                
                 self.frameTime = time.time()
                 self.frame += 1
                 if self.frame > self.frameMax:
                     self.frame = 0
                     self.birthCount += 1
+                    if self.birthCount != 3:
+                        Manager_Sound.PlayEffectSound('CHAR_FIXED')
                     if self.birthCount > 2:
                         self.birthCount = 0
                         self.birth = 2
                         self.player_state = 'STATE_DEAD'
                         self.frameScene = 6
                         self.frameMax = 6
+                        Manager_Sound.PlayEffectSound('CHAR_DIE')
             #움직임 추가
             if self.dir == 0:
                 self.Y += 1

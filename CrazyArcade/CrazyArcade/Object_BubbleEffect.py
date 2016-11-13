@@ -6,6 +6,7 @@ import Scene_NormalStage
 import Scene_BossStage
 
 import Manager_Collision
+import Manager_Sound
 
 import Object
 
@@ -62,6 +63,7 @@ class BubbleEffect(Object.GameObject):
                     Scene_NormalStage.gObjList[0][0].birth = 1
                     Scene_NormalStage.gObjList[0][0].frame = 0
                     Scene_NormalStage.gObjList[0][0].isSlidingPlayer = False
+                    Manager_Sound.PlayEffectSound('CHAR_FIXED')
         elif self.type == 1:
             if (len(Scene_BossStage.gObjList[0]) > 0):
                 if (Scene_BossStage.gObjList[0][0].birth == 0) and (Manager_Collision.collisionMiniIntersectRect(Scene_BossStage.gObjList[0][0], self)):
@@ -69,6 +71,7 @@ class BubbleEffect(Object.GameObject):
                     Scene_BossStage.gObjList[0][0].birth = 1
                     Scene_BossStage.gObjList[0][0].frame = 0
                     Scene_BossStage.gObjList[0][0].isSlidingPlayer = False
+                    Manager_Sound.PlayEffectSound('CHAR_FIXED')
 
     def collisionBubble(self):
         if self.type == 0:

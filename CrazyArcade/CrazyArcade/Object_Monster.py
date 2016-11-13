@@ -178,6 +178,7 @@ class Monster(Object.GameObject):
                     self.isCollision = True
                     Scene_NormalStage.gObjList[0][0].isSlidingPlayer = False
                     self.state = 1
+                    Manager_Sound.PlayEffectSound('CHAR_FIXED')
         elif self.type == 1:
             if (len(Scene_BossStage.gObjList[0]) > 0):
                 if (Manager_Collision.collisionMiniIntersectRect(self, Scene_BossStage.gObjList[0][0]) == True) \
@@ -187,6 +188,7 @@ class Monster(Object.GameObject):
                     self.isCollision = True
                     Scene_BossStage.gObjList[0][0].isSlidingPlayer = False
                     self.state = 1
+                    Manager_Sound.PlayEffectSound('CHAR_FIXED')
 
     def collisionBubble(self):
         if self.type == 0:

@@ -193,6 +193,7 @@ class BossMonster(Object.GameObject):
                     Scene_BossStage.gObjList[0][0].birth = 1
                     Scene_BossStage.gObjList[0][0].player_state = 'STATE_BUBBLE'
                     Scene_BossStage.gObjList[0][0].isSlidingPlayer = False
+                    Manager_Sound.PlayEffectSound('CHAR_FIXED')
                 elif (self.state == 2) and (self.frame < 22):
                     self.frame = 22
 

@@ -1,6 +1,7 @@
 # coding: cp949
 from pico2d import *
 import time
+#import os
 
 import Manager_Sound
 
@@ -43,11 +44,11 @@ def quit():
 
 def run(_scene):
     global gRunning, gStack
-    #사운드파일 Load
+     #사운드파일 Load
     Manager_Sound.LoadSoundData()
     #메인의 초기화
     gRunning = True
-    open_canvas(sync = True)
+    open_canvas()
     gStack = [_scene]
     _scene.enter()
 
@@ -67,5 +68,3 @@ def run(_scene):
         gStack[-1].exit()
         gStack.pop()
     close_canvas()
-    #사운드파일 Load
-    Manager_Sound.ClearAllSound()

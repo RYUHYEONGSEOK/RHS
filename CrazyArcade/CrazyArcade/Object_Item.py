@@ -5,6 +5,7 @@ import Scene_NormalStage
 import Scene_BossStage
 
 import Manager_Collision
+import Manager_Sound
 
 import Object
 
@@ -74,6 +75,10 @@ class Item(Object.GameObject):
             self.collisionBubble()
         #삭제처리
         if self.isDelete == True:
+            if self.type == 7:
+                Manager_Sound.PlayEffectSound('ITEM_BANANA_OFF')
+            else:
+                Manager_Sound.PlayEffectSound('ITEM_OFF')
             return False
 
     def draw(self):

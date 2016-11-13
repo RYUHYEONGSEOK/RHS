@@ -7,6 +7,7 @@ import Scene_NormalStage
 import Scene_BossStage
 
 import Manager_Collision
+import Manager_Sound
 
 import Object
 import Object_BubbleEffect
@@ -26,9 +27,13 @@ class Bubble(Object.GameObject):
         self.frameMax = None
         self.frameTime = 0
         self.isBushCheck = False
+        #사운드
+        Manager_Sound.PlayEffectSound('BUBBLE_ON')
 
     def __del__(self):
         self.exit()
+        #사운드
+        Manager_Sound.PlayEffectSound('BUBBLE_OFF')
 
     def enter(self):
         # 이미지 사용용도의 변수

@@ -1,6 +1,8 @@
 # coding: cp949
 from pico2d import *
 
+import Manager_Sound
+
 class Button:
     def __init__(self, _x, _y, _type):
         self.buttonType = _type
@@ -9,6 +11,7 @@ class Button:
         self.events = None;
         #충돌인지 아닌지 체크하는 부분과 이미지
         self.frame = 0
+        self.isFirst = False
 
     def __del__(self):
         self.exit()
@@ -47,8 +50,14 @@ class Button:
         if (((self.X - self.sizeX / 2) < self.mouseX) and ((self.X + self.sizeX / 2) > self.mouseX)) \
                 and (((self.Y - self.sizeY / 2) < (600 - self.mouseY)) and ((self.Y + self.sizeY / 2) > (600 - self.mouseY))):
             self.frame = 1
+            if self.isFirst == False:
+                self.isFirst = True
+                Manager_Sound.PlayEffectSound('BUTTON_ON')
         else:
             self.frame = 0
+            if self.isFirst == True:
+                self.isFirst = False
+                Manager_Sound.PlayEffectSound('BUTTON_OFF')
 
         # 키의 종류에 따라서 달라지는 리턴값들
         if(self.keycheck(_events)):
@@ -77,4 +86,5 @@ class Button:
             if event.type == SDL_MOUSEMOTION:
                 self.mouseX, self.mouseY = event.x, event.y
             if (event.type, self.frame) == (SDL_MOUSEBUTTONUP, 1):
+                Manager_Sound.PlayEffectSound('EMPTY_ON')
                 return True

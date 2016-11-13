@@ -181,15 +181,13 @@ class SpecialTile(Object_Tile.Tile):
         if self.type == 0:
             if self.breakingOption != 1:
                 for i in Scene_NormalStage.gObjList[6]:
-                    isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(i, self)
-                    if isCollision == True:
+                    if Manager_Collision.collisionMiniIntersectRect(i, self):
                         self.isCollision = True
                         break
         elif self.type == 1:
             if self.breakingOption != 1:
                 for i in Scene_BossStage.gObjList[6]:
-                    isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(i, self)
-                    if isCollision == True:
+                    if Manager_Collision.collisionMiniIntersectRect(i, self):
                         self.isCollision = True
                         break
 
@@ -197,12 +195,9 @@ class SpecialTile(Object_Tile.Tile):
         if self.type == 0:
             if self.breakingOption == 2:
                 for i in Scene_NormalStage.gObjList[5]:
-                    isCollision, left, top, right, bottom = Manager_Collision.collisionIntersectRect(self, i)
-                    if isCollision == True:
+                    i.isBushCheck = False
+                    if Manager_Collision.collisionMiniIntersectRect(self, i):
                         i.isBushCheck = True
-                    else:
-                        i.isBushCheck = False
-            else: pass
         elif self.type == 1: pass
 
     def collisionItem(self):
