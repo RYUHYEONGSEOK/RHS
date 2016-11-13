@@ -4,7 +4,7 @@ from pico2d import *
 
 class Boy:
     PIXEL_PER_METER = (10.0 / 0.3)           # 10 pixel 30 cm
-    RUN_SPEED_KMPH = 20.0                    # Km / Hour
+    RUN_SPEED_KMPH = 25.0                    # Km / Hour
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -18,38 +18,26 @@ class Boy:
     LEFT_RUN, RIGHT_RUN, LEFT_STAND, RIGHT_STAND = 0, 1, 2, 3
 
     def __init__(self):
-        self.x, self.y = 0, 90
+        self.x, self.y = 0, 100
         self.frame = random.randint(0, 7)
         self.life_time = 0.0
         self.total_frames = 0.0
         self.dir = 0
+        self.fall_speed = 100
+        self.isBrickCollision = False
         self.state = self.RIGHT_STAND
         if Boy.image == None:
             Boy.image = load_image('animation_sheet.png')
 
-
         #jump
-        self.isCollision = False
+        self.jump_count = 0
         self.isJump = False
-        self.jumpCount = 0
 
 
     def update(self, frame_time):
         def clamp(minimum, x, maximum):
             return max(minimum, min(x, maximum))
 
-
-        if self.isJump:
-            if self.jumpCount > 15:
-                self.y += 200 * frame_time
-            else:
-                self.y -= 200 * frame_time
-
-            self.jumpCount -= 1
-            if self.jumpCount < 0:
-                self.jumpCount = 0
-                self.isJump = False
-
         self.life_time += frame_time
         distance = Boy.RUN_SPEED_PPS * frame_time
         self.total_frames += Boy.FRAMES_PER_ACTION * Boy.ACTION_PER_TIME * frame_time
@@ -58,43 +46,26 @@ class Boy:
 
         self.x = clamp(0, self.x, 800)
 
-
-    def collisionUpdate(self, frame_time, dir, speed):
-        def clamp(minimum, x, maximum):
-            return max(minimum, min(x, maximum))
-
-        #left
-        if dir == 0:
-            self.x -= frame_time * speed
-        #right
-        elif dir == 1:
-            self.x += frame_time * speed
-
         if self.isJump:
-            if self.jumpCount > 15:
-                self.y += 500
-            else:
-                self.y -= 500
-
-            self.jumpCount -= 1
-            if self.jumpCount < 0:
-                self.jumpCount = 0
+            self.jump_count -= 1
+            if self.jump_count == 0:
                 self.isJump = False
 
-        self.life_time += frame_time
-        distance = Boy.RUN_SPEED_PPS * frame_time
-        self.total_frames += Boy.FRAMES_PER_ACTION * Boy.ACTION_PER_TIME * frame_time
-        self.frame = int(self.total_frames) % 8
-        self.x += (self.dir * distance)
+            if (self.isJump == True) and (self.jump_count < 41):
+                self.y += 80 * (self.jump_count - 20) * frame_time
+            elif (self.isJump == True) and (self.jump_count < 21):
+                self.y += 80 * self.jump_count * frame_time
 
-        self.x = clamp(0, self.x, 800)
+        self.y -= frame_time * self.fall_speed
 
+    def stop(self):
+        self.fall_speed = 0
 
     def draw(self):
         self.image.clip_draw(self.frame * 100, self.state * 100, 100, 100, self.x, self.y)
 
     def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+        return self.x - 25, self.y - 40, self.x + 25, self.y + 40
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -116,9 +87,8 @@ class Boy:
             if self.state in (self.RIGHT_RUN,):
                 self.state = self.RIGHT_STAND
                 self.dir = 0
-        #jump
+
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             if self.isJump == False:
                 self.isJump = True
-            else:
-                self.isJump = False
+                self.jump_count = 41

@@ -1,12 +1,12 @@
 ﻿from pico2d import *
 
 import game_framework
-import math
 
 
 from boy import Boy # import Boy class from boy.py
 from ball import Ball, BigBall
-from grass import Grass, Brick
+from grass import Grass
+from brick import Brick
 
 
 
@@ -22,22 +22,21 @@ def create_world():
     global boy, grass, balls, big_balls, brick
 
     boy = Boy()
-    big_balls = [BigBall() for i in range(10)]
     balls = [Ball() for i in range(10)]
+    big_balls = [BigBall() for i in range(10)]
     balls = big_balls + balls
     grass = Grass()
     brick = Brick()
 
 
 def destroy_world():
-    global boy, grass, balls, big_balls, birck
+    global boy, grass, balls, big_balls, brick
 
     del(boy)
     del(balls)
     del(grass)
     del(big_balls)
     del(brick)
-
 
 
 def enter():
@@ -64,16 +63,12 @@ def handle_events(frame_time):
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
-        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
-            if boy.isJump == True:
-                boy.y = 90
-            elif boy.isJump == False:
-                boy.x, boy.y = brick.x, brick.y + 70
         else:
             if (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
                 game_framework.quit()
             else:
                 boy.handle_event(event)
+
 
 
 def collide(a, b):
@@ -87,60 +82,129 @@ def collide(a, b):
 
     return True
 
+def collideAABB(a, b):
+    object1_x1, object1_y1, object1_x2, object1_y2 = a.get_bb()
+    object2_x1, object2_y1, object2_x2, object2_y2 = b.get_bb()
+    object3_x1, object3_y1, object3_x2, object3_y2 = 0, 0, 0, 0
+
+    if (object1_y1 <= object2_y2) and (object1_x2 >= object2_x1) \
+        and (object1_x1 <= object2_x2) and (object1_y2 >= object2_y1):
+        #top
+        if object1_y1 > object2_y1:
+            object3_y1 = object1_y1
+        elif object1_y1 <= object2_y1:
+            object3_y1 = object2_y1
+        #botton
+        if object1_y2 < object2_y2:
+            object3_y2 = object1_y2
+        elif object1_y2 >= object2_y2:
+            object3_y2 = object2_y2
+        #right
+        if object1_x2 < object2_x2:
+            object3_x2 = object1_x2
+        elif object1_x2 >= object2_x2:
+            object3_x2 = object2_x2
+        #left
+        if object1_x1 > object2_x1:
+            object3_x1 = object1_x1
+        elif object1_x1 <= object2_x1:
+            object3_x1 = object2_x1
+        return True, object3_x1, object3_y1, object3_x2, object3_y2
+    return False, object3_x1, object3_y1, object3_x2, object3_y2
+
 
 def update(frame_time):
+    global boy, brick
+    #moving
+    boy.update(frame_time)
     brick.update(frame_time)
-    
-    if boy.isCollision == False:
-        boy.update(frame_time)
-    else:
-        boy.collisionUpdate(frame_time, brick.dir, brick.speed)
+    if boy.isBrickCollision == True:
+        if brick.isLeftMoving:
+            boy.x -= brick.moving_speed * frame_time
+        else:
+            boy.x += brick.moving_speed * frame_time
 
     for ball in balls:
-        if ball.isCollision == True:
-            ball.collisionUpdate(frame_time, brick.dir, brick.speed)
-        elif ball.isCollision == False:
-            ball.update(frame_time)
+        ball.update(frame_time)
+        if ball.isBrickCollision == True:
+            if brick.isLeftMoving:
+                ball.x -= brick.moving_speed * frame_time
+            else:
+                ball.x += brick.moving_speed * frame_time
 
-    # fill here
+    #ball vs grass collision
+    for ball in balls:
+        if collide(grass, ball):
+            ball.stop()
+
+    #boy vs grass collision
+    if collide(boy, grass):
+        boy.stop()
+        boy.y = 100
+    else:
+        boy.fall_speed = 100
+
+    #ball vs boy collision
     for ball in balls:
         if collide(boy, ball):
             balls.remove(ball)
 
-    if collide(brick, boy):
-        boy.isCollision = True
-    else:
-        boy.isCollision = False
+    #ball vs brick collision
+    for ball in balls:
+        isCollision, left, top, right, bottom = collideAABB(ball, brick)
+        if isCollision == True:
+            width = right - left
+            length = bottom - top
+            if width > length:
+                if ball.y > brick.y:
+                    ball.isBrickCollision = True
+                    ball.stop()
+            
+    #boy vs brick collision
+    isCollision, left, top, right, bottom = collideAABB(boy, brick)
+    if isCollision == True:
+        boy.isBrickCollision = True
+        width = right - left
+        length = bottom - top
+        #top, bottom
+        if width > length:
+            #top
+            if boy.y > brick.y:
+                boy.stop()
+                boy.isJump = False
+            #bottom
+            else:
+                boy.isJump = False
+        #right,left
+        else:
+            #left
+            if boy.x > brick.x:
+                boy.x += width
+            #right
+            else:
+                boy.x -= width
+    elif isCollision == False:
+        boy.isBrickCollision = False
+        boy.fall_speed = 100
 
-    for ball in big_balls:
-        if collide(grass, ball):
-            ball.stop()
-        if collide(ball, brick):
-            fWidth = math.fabs(ball.x - brick.x)
-            if (ball.y <= (brick.y + 40)) and (fWidth < 90):
-                ball.isCollision = True
-                ball.stop()
 
-                
+
 
 def draw(frame_time):
     clear_canvas()
+
     grass.draw()
+    grass.draw_bb()
+
+    boy.draw()
+    boy.draw_bb()
 
     brick.draw()
     brick.draw_bb()
 
-    boy.draw()
     for ball in balls:
         ball.draw()
-
-    grass.draw_bb()
-    boy.draw_bb()
-    for ball in balls:
         ball.draw_bb()
 
+
     update_canvas()
-
-
-
-
