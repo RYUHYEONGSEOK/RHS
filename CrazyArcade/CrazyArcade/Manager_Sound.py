@@ -18,16 +18,6 @@ def LoadSoundData():
     SoundList['START'] = load_music('..\\Sound\\SFX_Word_Start.ogg')
     SoundList['START'].set_volume(64)
 
-    #배경 사운드
-    SoundList['BGM_MAP_1'] = load_music('..\\Sound\\BGM_Map_1.ogg')
-    SoundList['BGM_MAP_1'].set_volume(32)
-    SoundList['BGM_MAP_2_0'] = load_music('..\\Sound\\BGM_Map_2_0.ogg')
-    SoundList['BGM_MAP_2_0'].set_volume(32)
-    SoundList['BGM_MAP_2_1'] = load_music('..\\Sound\\BGM_Map_2_1.ogg')
-    SoundList['BGM_MAP_2_1'].set_volume(32)
-    SoundList['BGM_PREPARE'] = load_music('..\\Sound\\BGM_Prepare.ogg')
-    SoundList['BGM_PREPARE'].set_volume(32)
-
     #플레이어 사운드
     SoundList['CHAR_DIE'] = load_music('..\\Sound\\SFX_Character_Die.ogg')
     SoundList['CHAR_DIE'].set_volume(64)
@@ -82,26 +72,7 @@ def PlayRepeatedEffectSound(_sound_name):
     SoundList[_sound_name].repeat_play()
 
 
-def PlayBGMSound(_sound_name):
-    global SoundList
-
-    SoundList[_sound_name].repeat_play()
-
-
-def StopBGMSound(_sound_name):
-    global SoundList
-
-    SoundList[_sound_name].stop()
-
-
 def StopRepeatedEffectSound(_sound_name):
     global SoundList
 
     SoundList[_sound_name].stop()
-
-
-def StopAllSound():
-    global SoundList
-
-    for i in SoundList:
-        SoundList[i].stop()

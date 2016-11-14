@@ -34,6 +34,9 @@ gObjList = None
 PLAYER, MONSTER, BOSS_MONSTER, SPECIAL_TILE, ITEM, BUBBLE, BUBBLE_EFFECT, BANNER = 0, 1, 2, 3, 4, 5, 6, 7
 #타일 관리 리스트(15x13)
 gTileList = None
+#사운드
+gBGM = None
+gBGMtoHurryUp = None
 
 def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gSceneImage, gCoverImage
@@ -43,7 +46,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     # 게임의 시간
     global gTimeImage, gGameTime, gCheckTime
     gTimeImage = load_image('..\\Sprite\\03.InGame\\InGame_Image_Num.png')
-    gGameTime = 180
+    gGameTime = 50
     gCheckTime = time.time()
 
     # 게임의 시간에 대한 논리연산
@@ -99,7 +102,12 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gObjList[BOSS_MONSTER].append(tempBossMonster)
 
     # 사운드
-    Manager_Sound.PlayBGMSound('BGM_MAP_2_0')
+    global gBGM, gBGMtoHurryUp
+    gBGM = load_wav('..\\Sound\\BGM_Map_2_0.wav')
+    gBGM.set_volume(64)
+    gBGM.repeat_play()
+    gBGMtoHurryUp = load_wav('..\\Sound\\BGM_Map_2_1.wav')
+    gBGMtoHurryUp.set_volume(64)
 
 def exit():
     global gSceneImage, gCoverImage
@@ -137,10 +145,12 @@ def exit():
     del(gExitButton)
 
     #사운드
+    global gBGM, gBGMtoHurryUp
     if gIsHurryUp == True:
-        Manager_Sound.StopBGMSound('BGM_MAP_2_1')
+        del(gBGMtoHurryUp)
     elif gIsHurryUp == False:
-        Manager_Sound.StopBGMSound('BGM_MAP_2_0')
+        del(gBGM)
+        del(gBGMtoHurryUp)
 
 def update():
     # 게임의 시간 및 키보드이벤트
@@ -148,6 +158,8 @@ def update():
     global gObjList
     #게임의 시간에 대한 논리연산
     global gIsHurryUp, gIsStart, gIsEnd
+    #게임의 사운드
+    global gBGM, gBGMtoHurryUp
     #게임의 종료
     if (gIsEnd == True) and (len(gObjList[BANNER]) < 1):
         Framework.change_scene(Scene_Lobby)
@@ -170,8 +182,8 @@ def update():
                 gObjList[BANNER].append(tempBanner)
                 gIsHurryUp = True
                 #사운드
-                Manager_Sound.StopBGMSound('BGM_MAP_2_0')
-                Manager_Sound.PlayBGMSound('BGM_MAP_2_1')
+                del(gBGM)
+                gBGMtoHurryUp.repeat_play()
                 Manager_Sound.PlayEffectSound('HURRYUP')
     #시작배너
     if gIsStart == False:

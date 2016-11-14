@@ -38,7 +38,8 @@ class Monster(Object.GameObject):
     def __del__(self):
         self.exit()
         #사운드
-        Manager_Sound.PlayEffectSound('MONSTER_DIE')
+        if self.isDelete == True:
+            Manager_Sound.PlayEffectSound('MONSTER_DIE')
 
     def enter(self):
         # 이미지 사용용도의 변수

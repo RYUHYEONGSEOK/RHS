@@ -33,6 +33,8 @@ gObjList = None
 PLAYER, MONSTER, BOSS_MONSTER, SPECIAL_TILE, ITEM, BUBBLE, BUBBLE_EFFECT, BANNER = 0, 1, 2, 3, 4, 5, 6, 7
 #타일 관리 리스트(15x13)
 gTileList = None
+#사운드
+gBGM = None
 
 def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gSceneImage, gCoverImage
@@ -110,7 +112,10 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gObjList[MONSTER].append(tempMonster)
 
     # 사운드
-    Manager_Sound.PlayBGMSound('BGM_MAP_1')
+    global gBGM
+    gBGM = load_wav('..\\Sound\\BGM_Map_1.wav')
+    gBGM.set_volume(64)
+    gBGM.repeat_play()
 
 def exit():
     global gSceneImage, gCoverImage
@@ -148,7 +153,8 @@ def exit():
     del(gExitButton)
 
     #사운드
-    Manager_Sound.StopBGMSound('BGM_MAP_1')
+    global gBGM
+    del(gBGM)
 
 def update():
     #게임의 시간 및 키보드이벤트

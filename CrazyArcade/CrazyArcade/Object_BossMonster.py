@@ -34,7 +34,8 @@ class BossMonster(Object.GameObject):
     def __del__(self):
         self.exit()
         #사운드
-        Manager_Sound.PlayEffectSound('MONSTER_DIE')
+        if self.isDelete == True:
+            Manager_Sound.PlayEffectSound('MONSTER_DIE')
 
     def enter(self):
         # 이미지 사용용도의 변수
@@ -46,7 +47,7 @@ class BossMonster(Object.GameObject):
         self.frameMax = 5
         self.frameTime = time.time()
         #사운드
-        Manager_Sound.PlayRepeatedEffectSound('BOSS_MOVE')
+        Manager_Sound.PlayEffectSound('BOSS_MOVE')
 
     def exit(self):
         del (self.bossmonster_image)
@@ -114,8 +115,6 @@ class BossMonster(Object.GameObject):
                 self.frame = 0
                 self.frameMax = 3
                 self.AttackPlayer(0)
-                #사운드
-                Manager_Sound.StopRepeatedEffectSound('BOSS_MOVE')
             elif self.X > 520:
                 self.X = 520
                 self.dir = 3
@@ -123,8 +122,6 @@ class BossMonster(Object.GameObject):
                 self.frame = 0
                 self.frameMax = 3
                 self.AttackPlayer(1)
-                #사운드
-                Manager_Sound.StopRepeatedEffectSound('BOSS_MOVE')
 
     def framemove(self):
         #state는 0움직임 1공격과정(4번째열 얘만4장) 2물풍선에있는과정(5~11)
@@ -145,7 +142,7 @@ class BossMonster(Object.GameObject):
                     self.state = 0
                     self.frameMax = 5
                     #사운드
-                    Manager_Sound.PlayRepeatedEffectSound('BOSS_MOVE')
+                    Manager_Sound.PlayEffectSound('BOSS_MOVE')
         elif self.state == 2:
             if (self.frameTime + 0.25 < time.time()):
                 self.frameTime = time.time()

@@ -5,8 +5,6 @@ import Framework
 import Scene_NormalStage
 import Scene_BossStage
 
-import Manager_Sound
-
 import Object_Button
 
 gEvents = None
@@ -30,6 +28,8 @@ gAmbulNum = 0
 gDartNum = 0
 gPinNum = 0
 gBananaNum = 0
+#사운드
+gBGM = None
 
 def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gSceneImage, gCoverImage, gMapNormalImage, gMapBossImage, gNumberImage
@@ -61,7 +61,10 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     gAmbulNum, gDartNum, gPinNum, gBananaNum = _ambul, _dart, _pin, _banana
 
     # 사운드
-    Manager_Sound.PlayBGMSound('BGM_PREPARE')
+    global gBGM
+    gBGM = load_wav('..\\Sound\\BGM_Prepare.wav')
+    gBGM.set_volume(64)
+    gBGM.repeat_play()
 
 def exit():
     #이미지 삭제
@@ -83,7 +86,8 @@ def exit():
     del(gRButton)
 
     #사운드
-    Manager_Sound.StopBGMSound('BGM_PREPARE')
+    global gBGM
+    del(gBGM)
 
 def update():
     #이벤트값은 버튼들로 뿌려줘야 한다!

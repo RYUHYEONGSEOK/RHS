@@ -15,7 +15,7 @@ class SpecialTile(Object_Tile.Tile):
     def __init__(self, _x, _y, _type, _imagevalue = 0, _breakingOption = 0):
         # 타일 위치 및 이미지와 충돌 체크용 사이즈
         self.X, self.Y = _x, _y
-        self.sizeX, self.sizeY = 38, 38
+        self.sizeX, self.sizeY = 34, 34
         self.imageSizeX, self.imageSizeY = None, None
         # 타일의 속성
         self.type = _type  # 노말은0, 보스면1
@@ -195,7 +195,6 @@ class SpecialTile(Object_Tile.Tile):
         if self.type == 0:
             if self.breakingOption == 2:
                 for i in Scene_NormalStage.gObjList[5]:
-                    i.isBushCheck = False
                     if Manager_Collision.collisionMiniIntersectRect(self, i):
                         i.isBushCheck = True
         elif self.type == 1: pass
