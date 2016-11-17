@@ -10,27 +10,27 @@ def LoadSoundData():
     
     #배너 사운드
     SoundList['WIN'] = load_music('..\\Sound\\SFX_Word_Win.ogg')
-    SoundList['WIN'].set_volume(64)
+    SoundList['WIN'].set_volume(16)
     SoundList['LOSE'] = load_music('..\\Sound\\SFX_Word_Lose.ogg')
-    SoundList['LOSE'].set_volume(64)
+    SoundList['LOSE'].set_volume(16)
     SoundList['HURRYUP'] = load_music('..\\Sound\\SFX_Word_Hurryup.ogg')
-    SoundList['HURRYUP'].set_volume(64)
+    SoundList['HURRYUP'].set_volume(16)
     SoundList['START'] = load_music('..\\Sound\\SFX_Word_Start.ogg')
-    SoundList['START'].set_volume(64)
+    SoundList['START'].set_volume(16)
 
     #플레이어 사운드
     SoundList['CHAR_DIE'] = load_music('..\\Sound\\SFX_Character_Die.ogg')
-    SoundList['CHAR_DIE'].set_volume(64)
+    SoundList['CHAR_DIE'].set_volume(16)
     SoundList['CHAR_FIXED'] = load_music('..\\Sound\\SFX_Character_Fixed.ogg')
-    SoundList['CHAR_FIXED'].set_volume(64)
+    SoundList['CHAR_FIXED'].set_volume(16)
     SoundList['CHAR_REVIVAL'] = load_music('..\\Sound\\SFX_Character_Revival.ogg')
-    SoundList['CHAR_REVIVAL'].set_volume(64)
+    SoundList['CHAR_REVIVAL'].set_volume(16)
 
     #물풍선 사운드
     SoundList['BUBBLE_ON'] = load_music('..\\Sound\\SFX_Bubble_On.ogg')
-    SoundList['BUBBLE_ON'].set_volume(32)
+    SoundList['BUBBLE_ON'].set_volume(16)
     SoundList['BUBBLE_OFF'] = load_music('..\\Sound\\SFX_Bubble_Off.ogg')
-    SoundList['BUBBLE_OFF'].set_volume(32)
+    SoundList['BUBBLE_OFF'].set_volume(16)
 
     #버튼 사운드
     SoundList['BUTTON_ON'] = load_music('..\\Sound\\SFX_Button_On.ogg')
@@ -44,21 +44,21 @@ def LoadSoundData():
 
     #몬스터 사운드
     SoundList['MONSTER_DIE'] = load_music('..\\Sound\\SFX_Monster_Basic_Normal_Die.ogg')
-    SoundList['MONSTER_DIE'].set_volume(32)
+    SoundList['MONSTER_DIE'].set_volume(16)
 
     #보스몬스터 사운드
     SoundList['BOSS_MOVE'] = load_music('..\\Sound\\SFX_Monster_Boss_Move.ogg')
-    SoundList['BOSS_MOVE'].set_volume(32)
+    SoundList['BOSS_MOVE'].set_volume(16)
 
     #아이템 사운드
     SoundList['ITEM_BANANA_OFF'] = load_music('..\\Sound\\SFX_Item_Banana_Off.ogg')
-    SoundList['ITEM_BANANA_OFF'].set_volume(32)
+    SoundList['ITEM_BANANA_OFF'].set_volume(16)
     SoundList['ITEM_DART'] = load_music('..\\Sound\\SFX_Item_Dart.ogg')
-    SoundList['ITEM_DART'].set_volume(32)
+    SoundList['ITEM_DART'].set_volume(16)
     SoundList['ITEM_ON'] = load_music('..\\Sound\\SFX_Item_On.ogg')
-    SoundList['ITEM_ON'].set_volume(32)
+    SoundList['ITEM_ON'].set_volume(16)
     SoundList['ITEM_OFF'] = load_music('..\\Sound\\SFX_Item_Off.ogg')
-    SoundList['ITEM_OFF'].set_volume(32)
+    SoundList['ITEM_OFF'].set_volume(16)
 
 def PlayEffectSound(_sound_name):
     global SoundList
