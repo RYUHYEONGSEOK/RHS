@@ -46,7 +46,7 @@ def enter(_ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     # 게임의 시간
     global gTimeImage, gGameTime, gCheckTime
     gTimeImage = load_image('..\\Sprite\\03.InGame\\InGame_Image_Num.png')
-    gGameTime = 50
+    gGameTime = 90
     gCheckTime = time.time()
 
     # 게임의 시간에 대한 논리연산
