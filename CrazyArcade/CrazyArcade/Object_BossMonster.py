@@ -54,13 +54,13 @@ class BossMonster(Object.GameObject):
         del (self.bossHp_image)
         del (self.bossHpBar_image)
 
-    def update(self, _events):
+    def update(self, _frametime, _events):
         #삭제처리
         if self.isDelete == True:
             return False
 
         #움직임
-        self.move()
+        self.move(_frametime)
 
         #충돌처리(상태가 죽는과정이 아닐경우에 포함)
         if self.state != 2:
@@ -96,17 +96,17 @@ class BossMonster(Object.GameObject):
             tempY = (int)(self.frame / 6) + 5
             self.bossmonster_image.clip_draw(self.imageSizeX * tempX, 2691 - ((tempY + 1) * self.imageSizeY), self.imageSizeX, self.imageSizeY, self.X, self.Y)
 
-    def move(self):
+    def move(self, _frametime):
         if self.state == 0:
             #방향은 0상 1하 2우 3좌
             if self.dir == 0:
-                self.Y += self.speed
+                self.Y += self.speed * _frametime * 50
             elif self.dir == 1:
-                self.Y -= self.speed
+                self.Y -= self.speed * _frametime * 50
             elif self.dir == 2:
-                self.X += self.speed
+                self.X += self.speed * _frametime * 50
             elif self.dir == 3:
-                self.X -= self.speed
+                self.X -= self.speed * _frametime * 50
 
             if self.X < 120:
                 self.X = 120

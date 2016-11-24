@@ -52,14 +52,14 @@ class Monster(Object.GameObject):
         del (self.monster_image)
         #self.AStarList.clear()
 
-    def update(self, _events):
+    def update(self, _frametime, _events):
         #죽음처리
         if (self.isCollision == True) and (self.state == 0):
             self.state = 1
             self.frame = 0
 
         #움직임
-        self.move()
+        self.move(_frametime)
         #충돌처리
         self.collisionWall()
         self.collisionSpecialTile()
@@ -88,8 +88,6 @@ class Monster(Object.GameObject):
         #        Manager_ASTAR.AStarStart(self.X, self.Y, Scene_NormalStage.gObjList[0][0].X, Scene_NormalStage.gObjList[0][0].Y, self.type)
         #        for i in Manager_ASTAR.gBestList:
         #            self.AStarList.append(i)
-        #elif self.type == 1:
-        #    pass
         #에이스타 움직임
         #if self.type == 0:
         #    self.astarMove()
@@ -106,17 +104,17 @@ class Monster(Object.GameObject):
             tempY = (int)(self.frame / 2) + 4
             self.monster_image.clip_draw(self.imageSizeX * tempX, 234 - ((tempY + 1) * self.imageSizeY), self.imageSizeX, self.imageSizeY, self.X, self.Y)
 
-    def move(self):
+    def move(self, _frametime):
         #방향은 0하 1좌 2우 3상 (4죽음 5죽음)
         if self.state == 0:
             if self.dir == 0:
-                self.Y -= self.speed
+                self.Y -= self.speed * _frametime * 50
             elif self.dir == 1:
-                self.X -= self.speed
+                self.X -= self.speed * _frametime * 50
             elif self.dir == 2:
-                self.X += self.speed
+                self.X += self.speed * _frametime * 50
             elif self.dir == 3:
-                self.Y += self.speed
+                self.Y += self.speed * _frametime * 50
 
     def collisionWall(self):
         if self.X < 40:

@@ -89,7 +89,7 @@ def exit():
     global gBGM
     del(gBGM)
 
-def update():
+def update(_frametime):
     #이벤트값은 버튼들로 뿌려줘야 한다!
     global gEvents, gStageNumber
 

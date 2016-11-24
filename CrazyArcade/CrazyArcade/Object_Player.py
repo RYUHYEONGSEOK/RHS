@@ -51,23 +51,21 @@ class Player(Object.GameObject):
     def exit(self):
         del (self.player_image)
 
-    def update(self, _events):
+    def update(self, _frametime, _events):
         if self.birth < 3:
             #쿨타임 함수 추가
             self.itemMaxCheck()
 
-            #Manager_Sound.PlayEffectSound('CHAR_FIXED')
-
             #바나나있으면 바나나부터 체크하고 else로 keycheck
             if self.isSlidingPlayer:
                 if self.dir == 0:
-                    self.Y += 6
+                    self.Y += 6 * _frametime * 50
                 elif self.dir == 1:
-                    self.Y -= 6
+                    self.Y -= 6 * _frametime * 50
                 elif self.dir == 2:
-                    self.X += 6
+                    self.X += 6 * _frametime * 50
                 elif self.dir == 3:
-                    self.X -= 6
+                    self.X -= 6 * _frametime * 50
             else:
                 self.keycheck(_events)
 
@@ -75,7 +73,7 @@ class Player(Object.GameObject):
             self.collisionSpecialTile()
             self.collisionWall()
             #현재상태에 대한 애니메이션 부분
-            self.frame_move(self.player_state)
+            self.frame_move(_frametime, self.player_state)
 
         # 플레이어 죽음
         elif self.birth == 3:
@@ -217,7 +215,7 @@ class Player(Object.GameObject):
                         or (event.key == SDLK_RIGHT and self.dir == 2) or (event.key == SDLK_LEFT and self.dir == 3):
                         self.player_state = 'STATE_BUBBLE'
 
-    def frame_move(self, _player_state):
+    def frame_move(self, _frametime, _player_state):
         #처음 태어날 경우 태어나는 애니매이션 유지
         if ((self.player_state == 'STATE_BIRTH') and (self.frameTime + 1 < time.time())):
             self.frameTime = time.time()
@@ -251,13 +249,13 @@ class Player(Object.GameObject):
                     self.frame = 0
             #움직임 추가
             if self.dir == 0:
-                self.Y += self.speed
+                self.Y += self.speed * _frametime * 50
             elif self.dir == 1:
-                self.Y -= self.speed
+                self.Y -= self.speed * _frametime * 50
             elif self.dir == 2:
-                self.X += self.speed
+                self.X += self.speed * _frametime * 50
             elif self.dir == 3:
-                self.X -= self.speed
+                self.X -= self.speed * _frametime * 50
 
         elif self.player_state == 'STATE_BUBBLE':
             if self.frameScene != 4:
@@ -304,13 +302,13 @@ class Player(Object.GameObject):
                         Manager_Sound.PlayEffectSound('CHAR_DIE')
             #움직임 추가
             if self.dir == 0:
-                self.Y += 1
+                self.Y += 1 * _frametime * 50
             elif self.dir == 1:
-                self.Y -= 1
+                self.Y -= 1 * _frametime * 50
             elif self.dir == 2:
-                self.X += 1
+                self.X += 1 * _frametime * 50
             elif self.dir == 3:
-                self.X -= 1
+                self.X -= 1 * _frametime * 50
 
         elif self.player_state == 'STATE_DEAD':
             if self.frameScene != 6:

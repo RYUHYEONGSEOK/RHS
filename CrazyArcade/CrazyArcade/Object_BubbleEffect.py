@@ -38,7 +38,7 @@ class BubbleEffect(Object.GameObject):
     def exit(self):
         del (self.bubbleEffect_image)
 
-    def update(self, _events):
+    def update(self, _frametime, _events):
         #프레임 돌기
         if (self.frameTime + 0.1 < time.time()):
             self.frameTime = time.time()

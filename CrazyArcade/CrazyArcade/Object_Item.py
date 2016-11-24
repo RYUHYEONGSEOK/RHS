@@ -38,7 +38,7 @@ class Item(Object.GameObject):
     def exit(self):
         del (self.item_image)
 
-    def update(self, _events):
+    def update(self, _frametime, _events):
         #바나나에서 충돌체크되는지 체크
         if self.itemNumber == 7:
             if self.isCollision == False:
@@ -55,13 +55,13 @@ class Item(Object.GameObject):
         #다트만 움직임을 가짐
         if self.itemNumber == 8:
             if self.dir == 0:
-                self.Y += 8
+                self.Y += 8 * _frametime * 50
             elif self.dir == 1:
-                self.Y -= 8
+                self.Y -= 8 * _frametime * 50
             elif self.dir == 2:
-                self.X += 8
+                self.X += 8 * _frametime * 50
             elif self.dir == 3:
-                self.X -= 8
+                self.X -= 8 * _frametime * 50
             #벽 넘어가면 삭제
             if self.X > 620 or self.X < 20:
                 self.isDelete = True

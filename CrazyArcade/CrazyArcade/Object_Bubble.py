@@ -46,7 +46,7 @@ class Bubble(Object.GameObject):
         del (self.bubble_image)
         self.createBubbleEffect()
 
-    def update(self, _events):
+    def update(self, _frametime, _events):
         #충돌되는지에 대한 확인
         if self.isCollision == False:
             if self.type == 0:

@@ -152,7 +152,7 @@ def exit():
         del(gBGM)
         del(gBGMtoHurryUp)
 
-def update():
+def update(_frametime):
     # 게임의 시간 및 키보드이벤트
     global gEvents, gGameTime, gCheckTime
     global gObjList
@@ -212,7 +212,7 @@ def update():
     # 오브젝트관리 리스트 update
     for i in gObjList:
         for j in gObjList[i]:
-            if (j.update(gEvents) == False):
+            if (j.update(_frametime, gEvents) == False):
                 gObjList[i].remove(j)
 
     #나가기 버튼 로비로 이동

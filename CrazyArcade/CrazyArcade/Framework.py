@@ -1,6 +1,5 @@
 # coding: cp949
 from pico2d import *
-import time
 #import os
 
 import Manager_Sound
@@ -10,7 +9,7 @@ import Scene_Lobby
 
 gRunning = None
 gStack = None
-gFrameTime = time.time()
+gCurrent_time = None
 
 def change_scene(_scene, _ambul = 0, _dart = 0, _pin = 0, _banana = 0):
     global gStack
@@ -43,8 +42,10 @@ def quit():
     gRunning = False
 
 def run(_scene):
-    global gRunning, gStack
-     #사운드파일 Load
+    global gRunning, gStack, gCurrent_time
+    #frame_time
+    gCurrent_time = get_time()
+    #사운드파일 Load
     Manager_Sound.LoadSoundData()
     #메인의 초기화
     gRunning = True
@@ -54,14 +55,13 @@ def run(_scene):
 
     #게임의 구동부분
     while (gRunning):
-        #frame 40으로 한정
-        global gFrameTime
-        if gFrameTime + 0.025 < time.time() :
-            gFrameTime = time.time()
-            #키입력 + update + draw
-            gStack[-1].handle_events()
-            gStack[-1].update()
-            gStack[-1].draw()
+        #frame_time
+        frame_time = get_time() - gCurrent_time
+        gCurrent_time += frame_time
+        #키입력 + update + draw
+        gStack[-1].handle_events()
+        gStack[-1].update(frame_time)
+        gStack[-1].draw()
 
     #게임이 끝나게 되면 모든 씬 삭제
     while (len(gStack) > 0):

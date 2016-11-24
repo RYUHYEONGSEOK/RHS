@@ -28,7 +28,7 @@ class Banner(Object.GameObject):
     def exit(self):
         del (self.banner_image)
 
-    def update(self, _events):
+    def update(self, _frametime, _events):
         #3초 지나면 삭제
         if (self.start_time + 3 < time.time()):
             self.start_time = time.time()

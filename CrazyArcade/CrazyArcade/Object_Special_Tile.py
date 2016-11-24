@@ -124,7 +124,7 @@ class SpecialTile(Object_Tile.Tile):
                     tempItem.enter()
                     Scene_BossStage.gObjList[4].append(tempItem)
 
-    def update(self, _events):
+    def update(self, _frametime, _events):
         if self.isDeath == True:
             return False
 

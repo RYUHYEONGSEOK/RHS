@@ -19,7 +19,7 @@ def exit():
     global gSceneImage
     del(gSceneImage)
 
-def update():
+def update(_frametime):
     global gLogo_time
     if gLogo_time > 1.0:
         gLogo_time = 0
