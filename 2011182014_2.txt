@@ -1,0 +1,13 @@
+Thu Dec 22 11:48:40 2016 +0900 add last presentation
+Wed Dec 7 18:13:17 2016 +0900 add final setup file
+Wed Dec 7 17:51:00 2016 +0900 add packaging(PyCharm)
+Wed Dec 7 17:49:05 2016 +0900 add SDL2
+Fri Dec 2 12:26:55 2016 +0900 homework10
+Wed Nov 30 16:01:33 2016 +0900 add homework9
+Sun Nov 27 22:11:40 2016 +0900 last commit before packaging
+Thu Nov 24 10:22:48 2016 +0900 add frame time
+Mon Nov 21 11:39:55 2016 +0900 the last commit before packaging
+Sat Nov 19 11:42:53 2016 +0900 add backup sound files
+Fri Nov 18 10:59:45 2016 +0900 add music converting program
+Thu Nov 17 18:58:50 2016 +0900 modfiy sound file
+Tue Nov 15 00:16:46 2016 +0900 add git commit log txt file
